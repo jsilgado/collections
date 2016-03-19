@@ -35,6 +35,7 @@
 				<p:dataTable value="#{cars}" var="item" id="carsTable" resizableColumns="true" draggableColumns="true"
 						 rows="10"
                          paginator="true"
+                         paginatorPosition="bottom"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
 
@@ -43,10 +44,6 @@
                     	<p:commandButton id="toggler" type="button" style="float:right" icon="fa fa-columns" />
        					<p:columnToggler datasource="carsTable" trigger="toggler" />
                     </f:facet>
-
-					<p:column headerText="ID" sortBy="#{item.id}">
-						<h:outputText value="#{item.id}" />
-					</p:column>
 
 					<p:column headerText="Trademark" sortBy="#{item.trademark.name}">
 						<f:facet name="header">
@@ -76,7 +73,7 @@
 						<h:outputText value="#{item.year}" />
 					</p:column>
 
-					<p:column headerText="Action">
+					<p:column headerText="Action" exportable="false">
 						<p:commandButton title="Delete" icon="fa fa-trash" onclick="PF('carDialogDelete').show()">
 			        	</p:commandButton>
 			        	<p:commandButton title="Photos" update=":form:carDialog" action="detail" onclick="PF('carDialog').show()" icon="fa fa-camera" >
@@ -93,8 +90,28 @@
 					<f:facet name="footer">
 					        In total there are #{fn:length(cars)} cars.
 					</f:facet>
+
 				</p:dataTable>
 
+				<h:commandLink>
+	                <p:graphicImage value="/images/export/excel.png" width="24"/>
+	                <p:dataExporter type="xls" target="carsTable" fileName="cars" />
+	            </h:commandLink>
+
+	            <h:commandLink>
+	                <p:graphicImage value="/images/export/pdf.png" width="24"/>
+	                <p:dataExporter type="pdf" target="carsTable" fileName="cars"/>
+	            </h:commandLink>
+
+	            <h:commandLink>
+	                <p:graphicImage value="/images/export/csv.png" width="24"/>
+	                <p:dataExporter type="csv" target="carsTable" fileName="cars" />
+	            </h:commandLink>
+
+	            <h:commandLink>
+	                <p:graphicImage value="/images/export/xml.png" width="24"/>
+	                <p:dataExporter type="xml" target="carsTable" fileName="cars" />
+	            </h:commandLink>
 
 			</p:outputPanel>
 

@@ -14,22 +14,44 @@
 	<p:dialog header="Technologies" widgetVar="dlgTechnologies" width="75%" height="50%"
 		appendTo="@(body)">
 
-		<p:accordionPanel>
+		<p:accordionPanel activeIndex="0">
         <p:tab title="Primefaces" >
         	<p:panelGrid columns="2">
-			    <f:facet name="header">
-			         <p:graphicImage url="../images/technologies/primefaces.png" height="80" width="80" />
-			    </f:facet>
+                <p:panelGrid columns="2">
+				    <f:facet name="header">
+				         <p:graphicImage url="../images/technologies/primefaces.png" height="80" width="140" />
+				    </f:facet>
 
-			 	<h:outputText value="Technology:" />
-			    <h:outputText value="Primefaces" />
+				 	<h:outputText value="Technology:" />
+				    <h:outputText value="Primefaces" />
 
-			    <h:outputText value="Version:" />
-			    <h:outputText value="5.3" />
+				    <h:outputText value="Version:" />
+				    <h:outputText value="5.3" />
 
-			    <h:outputText value="Link:" />
-			    <p:link value="www.primefaces.org" href="http://www.primefaces.org/" target="_blank"></p:link>
+				    <h:outputText value="Link:" />
+				    <p:link value="www.primefaces.org" href="http://www.primefaces.org/" target="_blank"></p:link>
 
+				</p:panelGrid>
+				<p:panelGrid columns="2">
+				    <f:facet name="header">
+				         <h:outputText value="Components used:" />
+				    </f:facet>
+
+				 	<h:outputText value="accordionPanel" />
+				 	<p:button target="_blank" href="http://www.primefaces.org/showcase/ui/panel/accordionPanel.xhtml" icon="ui-icon-search" />
+
+				    <h:outputText value="dialog" />
+				    <p:button target="_blank" href="http://www.primefaces.org/showcase/ui/df/basic.xhtml" icon="ui-icon-search" />
+
+				    <h:outputText value="commandButton" />
+				    <p:button target="_blank" href="http://www.primefaces.org/showcase/ui/button/commandButton.xhtml" icon="ui-icon-search" />
+
+				    <h:outputText value="exporter" />
+				    <p:button target="_blank" href="http://www.primefaces.org/showcase/ui/data/dataexporter/basic.xhtml" icon="ui-icon-search" />
+
+
+
+				</p:panelGrid>
 			</p:panelGrid>
         </p:tab>
 
