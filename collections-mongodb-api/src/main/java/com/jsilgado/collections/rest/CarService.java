@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -32,16 +31,12 @@ public class CarService {
 	@Autowired
 	private MongoTemplate mongotemplate;
 
-	@Autowired
-	private GridFsTemplate gridTemplate;
-
 	@GET
 	@Path("/getAllCar")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<CarDTO> getCarsAll() {
 
 		return CarConverter.toDTO(this.mongotemplate.findAll(Car.class));
-
 	}
 
 	@POST
