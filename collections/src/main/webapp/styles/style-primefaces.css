@@ -1,0 +1,70 @@
+.ui-widget {
+    font-family: Verdana;
+}
+.ui-widget-header {
+    background: #2E64FE;
+    border: 1px solid #AAAAAA;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+.ui-datepicker {
+	width: 12em;
+}
+span .ui-datepicker-month {
+	color: #fff;
+}
+span .ui-datepicker-year {
+	color: #fff;
+}
+.ui-paginator-top {
+	background: #fff !important;
+	color: #2E64FE;
+}
+.ui-paginator-current-page {
+	background: #2E64FE !important; 
+}
+th.ui-state-default {
+	background: #2E64FE !important;
+	color: #fff;
+}
+.ui-datatable .ui-paginator {
+    text-align: left !important;
+}
+
+.ui-widget button {
+    font-family: Verdana;
+    font-size: 0.8em;
+}
+.ui-autocomplete{
+	font-family: Verdana;
+    font-size: 0.8em;
+}
+.ui-datepicker .ui-datepicker-title {
+    font-family: Verdana;
+    font-size: 0.8em !important;
+}
+
+.ui_tpicker_time_label {
+	font-family: Verdana;
+    font-size: 0.8em !important;
+}
+.ui_tpicker_time{
+	font-family: Verdana;
+    font-size: 0.8em !important;
+}
+.ui_tpicker_hour_label {
+	font-family: Verdana;
+    font-size: 0.8em !important;
+}
+.ui_tpicker_minute_label{
+	font-family: Verdana;
+    font-size: 0.8em !important;
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    background: #2E64FE;
+}
+
+/* SEPARATOR  */
+.ui-separator {
+	height:10px;
+}

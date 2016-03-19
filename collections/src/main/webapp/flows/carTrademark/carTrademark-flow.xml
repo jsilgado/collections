@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+<!-- 	<secured attributes="ROLE_USER" /> -->
+
+	<on-start>
+		<evaluate expression="carTrademarkController.initialize()" result="flowScope.carTrademark"></evaluate>
+		<evaluate expression="carTrademarkController.getAll()" result="flowScope.carTrademarks"></evaluate>
+	</on-start>
+
+	<view-state id="carTrademark" view="carTrademark.xhtml">
+
+		<transition on="add" to="carTrademark" validate="true">
+			<evaluate expression="carTrademarkController.insert(flowScope.carTrademark)"></evaluate>
+			<evaluate expression="carTrademarkController.getAll()" result="flowScope.carTrademarks"></evaluate>
+		</transition>
+
+		<transition on="delete" to="carTrademark" validate="false">
+			<evaluate expression="carTrademarkController.delete(requestParameters.idCarTrademark)"></evaluate>
+			<evaluate expression="carTrademarkController.getAll()" result="flowScope.carTrademarks"></evaluate>
+		</transition>
+
+		<transition on="reinit" to="carTrademark" validate="false">
+			<evaluate expression="carTrademarkController.initialize()" result="flowScope.carTrademark"></evaluate>
+		</transition>
+
+	</view-state>
+
+	<end-state id="allOk" />
+
+
+</flow>

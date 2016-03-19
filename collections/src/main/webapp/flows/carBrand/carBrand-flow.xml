@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+<!-- 	<secured attributes="ROLE_USER" /> -->
+
+	<on-start>
+		<evaluate expression="carBrandController.initialize()" result="flowScope.carBrand"></evaluate>
+		<evaluate expression="carBrandController.getAll()" result="flowScope.carBrands"></evaluate>
+	</on-start>
+
+	<view-state id="carBrand" view="carBrand.xhtml">
+
+		<transition on="add" to="carBrand" validate="true">
+			<evaluate expression="carBrandController.insert(flowScope.carBrand)"></evaluate>
+			<evaluate expression="carBrandController.getAll()" result="flowScope.carBrands"></evaluate>
+		</transition>
+
+		<transition on="delete" to="carBrand" validate="false">
+			<evaluate expression="carBrandController.delete(requestParameters.idCarBrand)"></evaluate>
+			<evaluate expression="carBrandController.getAll()" result="flowScope.carBrands"></evaluate>
+		</transition>
+
+		<transition on="reinit" to="carBrand" validate="false">
+			<evaluate expression="carBrandController.initialize()" result="flowScope.carBrand"></evaluate>
+		</transition>
+
+	</view-state>
+
+	<end-state id="allOk" />
+
+
+</flow>

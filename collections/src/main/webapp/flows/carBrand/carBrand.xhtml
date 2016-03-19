@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layouts/layout.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{msg.header_title}" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="form" enctype="multipart/form-data">
+
+			<ui:include src="/flows/common/loading.xhtml" />
+
+			<h:panelGroup layout="block" styleClass="bloqueMensajes">
+				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+			</h:panelGroup>
+
+			<p:panel header="Create a new car Brand" style="margin-bottom:20px">
+				<h:panelGrid columns="2" cellpadding="5">
+
+					<p:outputLabel value="Brand : *"  for="txt_Brand" />
+					<p:inputText id="txt_Brand" value="#{carBrand.name}"  required="true" label="Brand"/>
+
+                    <p:outputLabel value="Image : *"  for="txt_file" />
+					<p:fileUpload id="txt_file" fileUploadListener="#{carBrandController.handleFileUpload}" mode="advanced"
+                    		 auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+
+					<p:commandButton id="btn_reset" value="Reset" action="reinit" icon="fa fa-refresh" immediate="true" onclick="PF('loading').show();" oncomplete="PF('loading').hide();"/>
+
+					<p:commandButton value="Save" ajax="false" action="add" icon="ui-icon-check" update="carBrands msgs @parent" onclick="PF('loading').show();" oncomplete="PF('loading').hide();"/>
+
+				</h:panelGrid>
+			</p:panel>
+
+			<p:outputPanel id="carBrands">
+				<p:dataTable id="carBrandsTable" value="#{carBrands}" var="item" >
+
+					<f:facet name="header">
+                    	List of Car Brands
+                    </f:facet>
+
+					<p:column headerText="ID">
+						<h:outputText value="#{item.id}" />
+					</p:column>
+
+					<p:column headerText="Name">
+						<f:facet name="header">
+							<h:outputText value="Name" />
+						</f:facet>
+						<h:outputText value="#{item.name}" />
+					</p:column>
+
+					<p:column headerText="Image">
+   						<p:graphicImage value="/images/carBrand/Brand-black.png" rendered="#{item.urlImage == null}" title="No image" width="60" height="60"/>
+						<p:graphicImage value="#{item.urlImage}" rendered="#{item.urlImage != null}" title="Image" width="60" height="60"/>
+					</p:column>
+
+					<p:column headerText="Action">
+					    <p:commandButton title="Delete" ajax="false" action="delete" icon="fa fa-trash" onclick="PF('loading').show();" oncomplete="PF('loading').hide();">
+			            		<f:param name="idCarBrand" value="#{item.id}"></f:param>
+			        	</p:commandButton>
+					</p:column>
+
+					<f:facet name="footer">
+					        In total there are #{fn:length(carBrands)} car Brands.
+					</f:facet>
+				</p:dataTable>
+			</p:outputPanel>
+
+
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+</html>

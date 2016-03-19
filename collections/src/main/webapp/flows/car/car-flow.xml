@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+<!-- 	<secured attributes="ROLE_USER" /> -->
+
+	<on-start>
+		<evaluate expression="carController.initialize()" result="flowScope.car"></evaluate>
+		<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
+		<evaluate expression="carController.getAllCarTrademark()" result="flowScope.carTrademarks"></evaluate>
+		<evaluate expression="carController.getAllCarBrand()" result="flowScope.carBrands"></evaluate>
+	</on-start>
+
+	<view-state id="car" view="car.xhtml">
+
+		<on-entry>
+			<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
+		</on-entry>
+
+		<transition on="delete" to="car" validate="false">
+			<evaluate expression="carController.delete(requestParameters.idCar)"></evaluate>
+			<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
+		</transition>
+
+		<transition on="detail" to="car" validate="false">
+			<evaluate expression="carController.detailCar(requestParameters.idCar)"></evaluate>
+		</transition>
+
+		<transition on="new" to="carnewedit" validate="false">
+			<evaluate expression="carController.initialize()" result="flowScope.car"></evaluate>
+		</transition>
+
+	</view-state>
+
+	<view-state id="carnewedit" view="carnewedit.xhtml">
+
+		<transition on="add" to="car" validate="true">
+			<evaluate expression="carController.insertCar(flowScope.car)"></evaluate>
+			<evaluate expression="carController.getAllCar()" result="flowScope.cars"></evaluate>
+		</transition>
+
+		<transition on="reinit" to="carnewedit" validate="false">
+			<evaluate expression="carController.initialize()" result="flowScope.car"></evaluate>
+		</transition>
+
+		<transition on="back" to="car" validate="false">
+			<evaluate expression="carController.initialize()" result="flowScope.car"></evaluate>
+		</transition>
+
+	</view-state>
+
+	<end-state id="allOk" />
+
+
+</flow>
