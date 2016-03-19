@@ -90,7 +90,7 @@
 
 
 	<build>
-		<finalName>Collection-mongodb-api</finalName>
+		<finalName>collections-mongodb-api</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
