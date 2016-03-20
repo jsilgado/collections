@@ -15,7 +15,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<h:form id="form">
+		<h:form id="form" enctype="multipart/form-data">
 
 			<ui:include src="/flows/common/loading.xhtml" />
 
@@ -47,6 +47,9 @@
 						<f:validateDoubleRange minimum="1900" maximum="2100" />
 					</p:inputText>
 
+                    <p:outputLabel value="Image : *"  for="txt_file"/>
+					<p:fileUpload id="txt_file" fileUploadListener="#{carController.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                 				 multiple="true" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
 
 
 				</h:panelGrid>

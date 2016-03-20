@@ -47,7 +47,7 @@ public class CarTrademarkService {
 	@POST
 	@Path("/insertCarTrademark")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response insertCarTrademark(CarTrademark carTrademark) {
+	public Response insert(CarTrademark carTrademark) {
 
 		this.mongotemplate.save(carTrademark);
 
@@ -57,7 +57,7 @@ public class CarTrademarkService {
 	@GET
 	@Path("/getCarTrademark/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response gerCarTrademarkById(@PathParam("id") String id) {
+	public Response getById(@PathParam("id") String id) {
 		if (StringUtils.isEmpty(id)) {
 			return Response.noContent().build();
 		}
@@ -72,7 +72,7 @@ public class CarTrademarkService {
 	@Path("/updateCarTrademark/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateCarTrademark(@PathParam("id") String id, CarTrademark carTrademark) {
+	public Response update(@PathParam("id") String id, CarTrademark carTrademark) {
 		CarTrademark updatedCarTrademark = new CarTrademark();
 
 		if (carTrademark.getName() == null) {
@@ -90,7 +90,7 @@ public class CarTrademarkService {
 	@DELETE
 	@Path("/deleteCarTrademark/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteCarTrademark(@PathParam("id") String id) {
+	public Response delete(@PathParam("id") String id) {
 		this.mongotemplate.remove(new Query(Criteria.where("id").is(id)), CarTrademark.class);
 
 		return Response.ok().build();
@@ -99,7 +99,7 @@ public class CarTrademarkService {
 	@GET
 	@Path("/deleteCarTrademark/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteCarTrademarkGET(@PathParam("id") String id) {
+	public Response deleteGET(@PathParam("id") String id) {
 		CarTrademark carTrademark = this.mongotemplate.findOne(new Query(Criteria.where("id").is(id)),
 				CarTrademark.class);
 		this.gridTemplate.delete(new Query().addCriteria(Criteria.where("_id").is(carTrademark.getIdImage())));

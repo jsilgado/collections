@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -31,10 +32,13 @@ public class CarService {
 	@Autowired
 	private MongoTemplate mongotemplate;
 
+	@Autowired
+	private GridFsTemplate gridTemplate;
+
 	@GET
 	@Path("/getAllCar")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<CarDTO> getCarsAll() {
+	public List<CarDTO> getAll() {
 
 		return CarConverter.toDTO(this.mongotemplate.findAll(Car.class));
 	}
@@ -42,7 +46,7 @@ public class CarService {
 	@POST
 	@Path("/insertCar")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response insertCar(CarDTO carDTO) {
+	public Response insert(CarDTO carDTO) {
 
 		CarTrademark carTrademark = this.mongotemplate
 				.findOne(new Query(Criteria.where("id").is(carDTO.getCarTrademarkDTO().getId())), CarTrademark.class);
@@ -61,27 +65,57 @@ public class CarService {
 	@GET
 	@Path("/getCar/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response gerCarTrademark(@PathParam("id") String id) {
+	public Response gerById(@PathParam("id") String id) {
 		if (StringUtils.isEmpty(id)) {
 			return Response.noContent().build();
 		}
 
 		Car car = this.mongotemplate.findOne(new Query(Criteria.where("id").is(id)), Car.class);
 
-		return Response.ok().entity(car).build();
+		return Response.ok().entity(CarConverter.toDTO(car)).build();
 	}
 
 	@GET
 	@Path("/deleteCar/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteCarGET(@PathParam("id") String id) {
-		// Car car = mongotemplate.findOne(new
-		// Query(Criteria.where("id").is(id)), Car.class);
-		// gridTemplate.delete(new
-		// Query().addCriteria(Criteria.where("_id").is(carTrademark.getIdImage())));
+	public Response deleteGET(@PathParam("id") String id) {
+		Car car = this.mongotemplate.findOne(new Query(Criteria.where("id").is(id)), Car.class);
+
+		for (String idImage : car.getLstIdImage()) {
+			this.gridTemplate.delete(new Query().addCriteria(Criteria.where("_id").is(idImage)));
+		}
 		this.mongotemplate.remove(new Query(Criteria.where("id").is(id)), Car.class);
 
 		return Response.ok().build();
 	}
+	//
+	// @GET
+	// @Path("/deleteOrphanedImages")
+	// public void deleteOrphanedImages() {
+	//
+	// List<String> lstCarImages = new ArrayList<>();
+	//
+	// retwet
+	// FALTA LOS DE CARBRAN Y TRADEMARK
+	// List<Car> lstCars = this.mongotemplate.findAll(Car.class);
+	//
+	// for (Car car : lstCars) {
+	// if (car.getLstIdImage() != null) {
+	// lstCarImages.addAll(car.getLstIdImage());
+	// }
+	//
+	// }
+	//
+	// List<GridFSDBFile> find = this.gridTemplate.find(new Query());
+	//
+	// for (Object element : find) {
+	// GridFSDBFile gridFSDBFile = (GridFSDBFile) element;
+	// if (!lstCarImages.contains(gridFSDBFile.getId())) {
+	// this.gridTemplate.delete(new
+	// Query().addCriteria(Criteria.where("_id").is(gridFSDBFile.getId())));
+	// }
+	// }
+	//
+	// }
 
 }

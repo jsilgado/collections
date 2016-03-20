@@ -39,7 +39,7 @@ public class CarBrandService {
 	@GET
 	@Path("/getAllCarBrand")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<CarBrandDTO> getCarsAll() {
+	public List<CarBrandDTO> getAll() {
 
 		return CarBrandConverter.toDTO(this.mongotemplate.findAll(CarBrand.class));
 
@@ -48,7 +48,7 @@ public class CarBrandService {
 	@POST
 	@Path("/insertCarBrand")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response insertCarBrand(CarBrandDTO carBrandDTO) {
+	public Response insert(CarBrandDTO carBrandDTO) {
 
 		this.mongotemplate.save(CarBrandConverter.toEntity(carBrandDTO));
 
@@ -58,7 +58,7 @@ public class CarBrandService {
 	@DELETE
 	@Path("/deleteCarBrand/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteCarTrademark(@PathParam("id") String id) {
+	public Response delete(@PathParam("id") String id) {
 		this.mongotemplate.remove(new Query(Criteria.where("id").is(id)), CarTrademark.class);
 
 		return Response.ok().build();
@@ -67,7 +67,7 @@ public class CarBrandService {
 	@GET
 	@Path("/deleteCarBrand/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response deleteCarBrandkGET(@PathParam("id") String id) {
+	public Response deleteGET(@PathParam("id") String id) {
 		CarBrand carBrand = this.mongotemplate.findOne(new Query(Criteria.where("id").is(id)), CarBrand.class);
 		this.gridTemplate.delete(new Query().addCriteria(Criteria.where("_id").is(carBrand.getIdImage())));
 		this.mongotemplate.remove(new Query(Criteria.where("id").is(id)), CarBrand.class);

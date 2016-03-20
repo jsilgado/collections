@@ -24,7 +24,7 @@
 		</transition>
 
 		<transition on="detail" to="car" validate="false">
-			<evaluate expression="carController.detailCar(requestParameters.idCar)"></evaluate>
+			<evaluate expression="carController.detailCar(requestParameters.idCar)" ></evaluate>
 		</transition>
 
 		<transition on="new" to="carnewedit" validate="false">
@@ -36,8 +36,8 @@
 	<view-state id="carnewedit" view="carnewedit.xhtml">
 
 		<transition on="add" to="car" validate="true">
-			<evaluate expression="carController.insertCar(flowScope.car)"></evaluate>
-			<evaluate expression="carController.getAllCar()" result="flowScope.cars"></evaluate>
+			<evaluate expression="carController.insert(flowScope.car)"></evaluate>
+			<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
 		</transition>
 
 		<transition on="reinit" to="carnewedit" validate="false">

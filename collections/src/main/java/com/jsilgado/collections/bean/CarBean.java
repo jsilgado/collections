@@ -1,8 +1,10 @@
 package com.jsilgado.collections.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.primefaces.model.UploadedFile;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,10 +24,16 @@ public class CarBean implements Serializable {
 
 	private List<String> lstIdImage;
 
+	private List<String> lstUrlImage;
+
+	private List<UploadedFile> lstFiles;
+
 	public CarBean() {
 		super();
 		this.trademark = new CarTrademarkBean();
 		this.brand = new CarBrandBean();
+		this.lstFiles = new ArrayList<>();
+		this.lstIdImage = new ArrayList<>();
 	}
 
 	public String getId() {
@@ -74,6 +82,22 @@ public class CarBean implements Serializable {
 
 	public void setLstIdImage(List<String> lstIdImage) {
 		this.lstIdImage = lstIdImage;
+	}
+
+	public List<UploadedFile> getLstFiles() {
+		return this.lstFiles;
+	}
+
+	public void setLstFiles(List<UploadedFile> lstFiles) {
+		this.lstFiles = lstFiles;
+	}
+
+	public List<String> getLstUrlImage() {
+		return this.lstUrlImage;
+	}
+
+	public void setLstUrlImage(List<String> lstUrlImage) {
+		this.lstUrlImage = lstUrlImage;
 	}
 
 }

@@ -74,17 +74,17 @@
 					</p:column>
 
 					<p:column headerText="Action" exportable="false">
-						<p:commandButton title="Delete" icon="fa fa-trash" onclick="PF('carDialogDelete').show()">
+						<p:commandButton title="Delete" icon="fa fa-trash" action="delete">
+							<f:param name="idCar" value="#{item.id}"></f:param>
+							<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
 			        	</p:commandButton>
-			        	<p:commandButton title="Photos" update=":form:carDialog" action="detail" onclick="PF('carDialog').show()" icon="fa fa-camera" >
-			             	<f:param name="idCar" value="#{item.id}"></f:param>
+			        	<p:commandButton title="Photos" update=":form :carDialog" onclick="PF('carDialog').show();" icon="fa fa-camera" >
+			        		<f:setPropertyActionListener target="#{car}" value="#{item}" />
 			             </p:commandButton>
+
 			             <p:commandButton title="Edit" icon="fa fa-edit" type="button">
 			             	<f:param name="idCar" value="#{item.id}"></f:param>
 			             </p:commandButton>
-			             <p:commandButton value="Yes Sure" action="delete" ajax="false" onclick="PF('loading').show();" oncomplete="PF('carDialogDelete').hide();PF('loading').hide();">
-			 				<f:param name="idCar" value="#{item.id}"></f:param>
-			 			</p:commandButton>
 					</p:column>
 
 					<f:facet name="footer">
@@ -116,9 +116,10 @@
 			</p:outputPanel>
 
 
-
-
-
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      			  <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+       			  <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+   			</p:confirmDialog>
 
 			 <p:dialog header="Car Info" id="carDialog" widgetVar="carDialog" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
 			    	<p:commandButton type="button" onclick="PF('switcher').previous();"
@@ -128,24 +129,13 @@
 
 			       <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
 					    slideshowAuto="false">
-					    <ui:repeat value="#{carController.lstUrlImage}" var="image" id="manuelSwitcherImages">
+					    <ui:repeat value="#{car.lstUrlImage}" var="image" id="manuelSwitcherImages">
 					        <p:graphicImage value="#{image}" id="image"/>
 					    </ui:repeat>
 					</p:imageSwitch>
 			  </p:dialog>
 
 		</h:form>
-
-
-		 <p:dialog message="Are you sure about destroying the world?" header="Initiating destroy process" severity="alert"  widgetVar="carDialogDelete" appendTo="@(body)">
-					<h:form>
-			 			<p:commandButton value="Yes Sure" action="delete" immediate="true" ajax="false" process="@this" oncomplete="PF('carDialogDelete').hide();">
-			 				<f:param name="idCar" value="34"></f:param>
-			 			</p:commandButton>
-
-			 			<p:commandButton value="Not Yet" onclick="PF('carDialogDelete').hide();" type="button" />
-			 		</h:form>
-			 	</p:dialog>
 
 	</ui:define>
 

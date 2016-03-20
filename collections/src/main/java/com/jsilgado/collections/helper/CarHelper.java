@@ -1,5 +1,6 @@
 package com.jsilgado.collections.helper;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.filter.LoggingFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,9 @@ public class CarHelper implements Serializable {
 
 	@Value("#{restProperties['rest.urlRest']}")
 	private String restUrl;
+
+	@Autowired
+	private FileHelper fileHelper;
 
 	public List<CarBean> getAllCar() throws HelperException {
 
@@ -60,7 +65,14 @@ public class CarHelper implements Serializable {
 
 	}
 
-	public void insertCar(CarBean carbean) throws HelperException {
+	public void insertCar(CarBean carbean, List<InputStream> lstStream) throws HelperException {
+
+		for (InputStream inputStream2 : lstStream) {
+			InputStream inputStream = inputStream2;
+
+			String idImage = this.fileHelper.uploadFile(inputStream);
+			carbean.getLstIdImage().add(idImage);
+		}
 
 		CarDTO carDTO = CarConverter.toDTO(carbean);
 
@@ -95,7 +107,7 @@ public class CarHelper implements Serializable {
 	public CarBean getCar(String idCar) throws HelperException {
 
 		Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
-		WebTarget webTarget = client.target(this.restUrl).path("car/geteCar/" + idCar);
+		WebTarget webTarget = client.target(this.restUrl).path("car/getCar/" + idCar);
 
 		Invocation.Builder invocationBuilder = webTarget.request();
 		Response response = invocationBuilder.get();

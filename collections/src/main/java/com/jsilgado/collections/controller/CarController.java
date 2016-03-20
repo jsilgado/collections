@@ -1,14 +1,21 @@
 package com.jsilgado.collections.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -43,8 +50,13 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 
 	private List<String> lstUrlImage;
 
+	private List<UploadedFile> lstFiles;
+
 	@Override
 	public CarBean initialize() {
+
+		this.lstFiles = new ArrayList<>();
+		this.lstUrlImage = new ArrayList<>();
 		return new CarBean();
 	}
 
@@ -55,15 +67,6 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 
 		try {
 			lstCarBean = this.carHelper.getAllCar();
-
-			this.lstUrlImage = new ArrayList<>();
-
-			this.lstUrlImage
-					.add("http://localhost:8080/collections-mongodb-api/rest/json/getFile/56dc24affab9e418a8ca1b61");
-			this.lstUrlImage
-					.add("http://localhost:8080/collections-mongodb-api/rest/json/getFile/56dc24cefab9e418a8ca1b64");
-			this.lstUrlImage
-					.add("http://localhost:8080/collections-mongodb-api/rest/json/getFile/56dc8536fab9e421680b2b78");
 
 		} catch (HelperException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
@@ -114,13 +117,24 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 
 		try {
 			if (this.validateCar(car)) {
-				this.carHelper.insertCar(car);
+
+				List<InputStream> lstStream = new ArrayList<>();
+
+				for (Object element : this.lstFiles) {
+					UploadedFile uploadedFile = (UploadedFile) element;
+					lstStream.add(uploadedFile.getInputstream());
+				}
+
+				this.carHelper.insertCar(car, lstStream);
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Se ha insertado correctamente"));
 			}
 		} catch (HelperException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCodeError(), e.getDescription()));
+		} catch (IOException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, null, e.getMessage()));
 		}
 
 	}
@@ -173,10 +187,24 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 			CarBean carBean = this.carHelper.getCar(id);
 			this.lstUrlImage.addAll(this.fileHelper.getUrlFile(carBean.getLstIdImage()));
 
+			Map<String, Object> options = new HashMap<String, Object>();
+			options.put("resizable", false);
+			options.put("draggable", false);
+			options.put("modal", true);
+			RequestContext.getCurrentInstance().openDialog("carDialog", options, null);
+
 		} catch (HelperException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCodeError(), e.getDescription()));
 		}
+
+	}
+
+	public void handleFileUpload(FileUploadEvent event) {
+		FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+		FacesContext.getCurrentInstance().addMessage(null, message);
+
+		this.getLstFiles().add(event.getFile());
 
 	}
 
@@ -188,4 +216,11 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 		this.lstUrlImage = lstUrlImage;
 	}
 
+	public List<UploadedFile> getLstFiles() {
+		return this.lstFiles;
+	}
+
+	public void setLstFiles(List<UploadedFile> lstFiles) {
+		this.lstFiles = lstFiles;
+	}
 }
