@@ -1,10 +1,12 @@
 package com.jsilgado.collections.helper;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.jsilgado.collections.bean.CarBean;
+import com.jsilgado.collections.bean.ImageBean;
 import com.jsilgado.collections.dto.CarDTO;
 import com.jsilgado.collections.dto.converters.CarConverter;
 import com.jsilgado.collections.exception.HelperException;
@@ -56,36 +59,41 @@ public class CarHelper implements Serializable {
 
 		for (CarBean carBean : lstCarBean) {
 
-			carBean.getLstIdImage().add("56dc24affab9e418a8ca1b61");
-			carBean.getLstIdImage().add("56dc24cefab9e418a8ca1b64");
-			carBean.getLstIdImage().add("56dc8536fab9e421680b2b78");
+			for (ImageBean imageBean : carBean.getLstImagenBean()) {
+				imageBean.setUrl(this.fileHelper.getUrlFile(imageBean.getId()));
+			}
 		}
 
 		return lstCarBean;
 
 	}
 
-	public void insertCar(CarBean carbean, List<InputStream> lstStream) throws HelperException {
+	public void insertCar(CarBean carbean) throws HelperException {
 
-		for (InputStream inputStream2 : lstStream) {
-			InputStream inputStream = inputStream2;
+		try {
+			for (ImageBean imageBean : carbean.getLstImagenBean()) {
 
-			String idImage = this.fileHelper.uploadFile(inputStream);
-			carbean.getLstIdImage().add(idImage);
-		}
+				String idImage = this.fileHelper.uploadFile(imageBean.getFile().getInputstream());
+				imageBean.setId(idImage);
+				imageBean.setUrl(this.fileHelper.getUrlFile(idImage));
+			}
 
-		CarDTO carDTO = CarConverter.toDTO(carbean);
+			CarDTO carDTO = CarConverter.toDTO(carbean);
 
-		Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
+			Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
 
-		WebTarget webTarget = client.target(this.restUrl).path("car").path("insertCar");
+			WebTarget webTarget = client.target(this.restUrl).path("car").path("insertCar");
 
-		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		Response response = invocationBuilder.post(Entity.entity(carDTO, MediaType.APPLICATION_JSON));
+			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+			Response response = invocationBuilder.post(Entity.entity(carDTO, MediaType.APPLICATION_JSON));
 
-		if (response.getStatus() != 200) {
-			throw new HelperException(Integer.toString(response.getStatus()),
-					"Failed : HTTP error code : " + response.getStatus());
+			if (response.getStatus() != 200) {
+				throw new HelperException(Integer.toString(response.getStatus()),
+						"Failed : HTTP error code : " + response.getStatus());
+			}
+		} catch (IOException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, null, e.getMessage()));
 		}
 	}
 
@@ -120,6 +128,10 @@ public class CarHelper implements Serializable {
 		CarDTO carDTO = response.readEntity(CarDTO.class);
 
 		CarBean carBean = CarConverter.toBean(carDTO);
+
+		for (ImageBean imageBean : carBean.getLstImagenBean()) {
+			imageBean.setUrl(this.fileHelper.getUrlFile(imageBean.getId()));
+		}
 
 		return carBean;
 	}

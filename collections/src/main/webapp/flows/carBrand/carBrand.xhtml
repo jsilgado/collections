@@ -20,36 +20,43 @@
 			<ui:include src="/flows/common/loading.xhtml" />
 
 			<h:panelGroup layout="block" styleClass="bloqueMensajes">
-				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+				<p:messages id="msgs" showDetail="true" autoUpdate="true"
+					closable="true" />
 			</h:panelGroup>
 
 			<p:panel header="Create a new car Brand" style="margin-bottom:20px">
 				<h:panelGrid columns="2" cellpadding="5">
 
-					<p:outputLabel value="Brand : *"  for="txt_Brand" />
-					<p:inputText id="txt_Brand" value="#{carBrand.name}"  required="true" label="Brand"/>
+					<p:outputLabel value="Brand : " for="txt_Brand" />
+					<p:inputText id="txt_Brand" value="#{carBrand.name}"
+						required="true" label="Brand" />
 
-                    <p:outputLabel value="Image : *"  for="txt_file" />
-					<p:fileUpload id="txt_file" fileUploadListener="#{carBrandController.handleFileUpload}" mode="advanced"
-                    		 auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+					<p:outputLabel value="Image : *" for="txt_file" />
+					<p:fileUpload id="txt_file"
+						fileUploadListener="#{carBrandController.handleFileUpload}"
+						mode="advanced" auto="true" sizeLimit="100000"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
 
-					<p:commandButton id="btn_reset" value="Reset" action="reinit" icon="fa fa-refresh" immediate="true" onclick="PF('loading').show();" oncomplete="PF('loading').hide();"/>
+					<p:commandButton id="btn_reset" value="Reset" action="reinit"
+						icon="fa fa-refresh" immediate="true"
+						onclick="PF('loading').show();" oncomplete="PF('loading').hide();" />
 
-					<p:commandButton value="Save" ajax="false" action="add" icon="ui-icon-check" update="carBrands msgs @parent" onclick="PF('loading').show();" oncomplete="PF('loading').hide();"/>
+					<p:commandButton value="Save" ajax="false" action="add"
+						icon="ui-icon-check" update="carBrands msgs @parent"
+						onclick="PF('loading').show();" oncomplete="PF('loading').hide();" />
 
 				</h:panelGrid>
 			</p:panel>
 
 			<p:outputPanel id="carBrands">
-				<p:dataTable id="carBrandsTable" value="#{carBrands}" var="item" >
+				<p:dataTable id="carBrandsTable" value="#{carBrands}" var="item"
+					rows="5" paginator="true" paginatorPosition="bottom"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
 
 					<f:facet name="header">
                     	List of Car Brands
                     </f:facet>
-
-					<p:column headerText="ID">
-						<h:outputText value="#{item.id}" />
-					</p:column>
 
 					<p:column headerText="Name">
 						<f:facet name="header">
@@ -59,14 +66,20 @@
 					</p:column>
 
 					<p:column headerText="Image">
-   						<p:graphicImage value="/images/carBrand/Brand-black.png" rendered="#{item.urlImage == null}" title="No image" width="60" height="60"/>
-						<p:graphicImage value="#{item.urlImage}" rendered="#{item.urlImage != null}" title="Image" width="60" height="60"/>
+						<p:graphicImage value="/images/carBrand/Brand-black.png"
+							rendered="#{item.urlImage == null}" title="No image" width="60"
+							height="60" />
+						<p:graphicImage value="#{item.urlImage}"
+							rendered="#{item.urlImage != null}" title="Image" width="60"
+							height="60" />
 					</p:column>
 
 					<p:column headerText="Action">
-					    <p:commandButton title="Delete" ajax="false" action="delete" icon="fa fa-trash" onclick="PF('loading').show();" oncomplete="PF('loading').hide();">
-			            		<f:param name="idCarBrand" value="#{item.id}"></f:param>
-			        	</p:commandButton>
+						<p:commandButton title="Delete" ajax="false" action="delete"
+							icon="fa fa-trash" onclick="PF('loading').show();"
+							oncomplete="PF('loading').hide();">
+							<f:param name="idCarBrand" value="#{item.id}"></f:param>
+						</p:commandButton>
 					</p:column>
 
 					<f:facet name="footer">

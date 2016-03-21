@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jsilgado.collections.bean.CarBean;
+import com.jsilgado.collections.bean.ImageBean;
 import com.jsilgado.collections.dto.CarDTO;
 
 public class CarConverter {
@@ -24,11 +25,10 @@ public class CarConverter {
 			output.setModel(input.getModel());
 			output.setYear(input.getYear());
 			if (input.getLstIdImage() != null) {
-				output.setLstIdImage(input.getLstIdImage());
-			} else {
-				output.setLstIdImage(new ArrayList<>());
+				for (String idImage : input.getLstIdImage()) {
+					output.getLstImagenBean().add(new ImageBean(idImage));
+				}
 			}
-
 		}
 
 		return output;
@@ -63,7 +63,12 @@ public class CarConverter {
 			output.setCarBrandDTO(CarBrandConverter.toDTO(input.getBrand()));
 			output.setModel(input.getModel());
 			output.setYear(input.getYear());
-			output.setLstIdImage(input.getLstIdImage());
+
+			if (input.getLstImagenBean() != null) {
+				for (ImageBean imageBean : input.getLstImagenBean()) {
+					output.getLstIdImage().add(imageBean.getId());
+				}
+			}
 
 		}
 

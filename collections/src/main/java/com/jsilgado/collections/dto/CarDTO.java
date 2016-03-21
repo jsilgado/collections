@@ -1,5 +1,6 @@
 package com.jsilgado.collections.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarDTO {
@@ -18,10 +19,11 @@ public class CarDTO {
 
 	public CarDTO() {
 		super();
+		this.lstIdImage = new ArrayList<>();
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -29,7 +31,7 @@ public class CarDTO {
 	}
 
 	public CarTrademarkDTO getCarTrademarkDTO() {
-		return carTrademarkDTO;
+		return this.carTrademarkDTO;
 	}
 
 	public void setCarTrademarkDTO(CarTrademarkDTO carTrademarkDTO) {
@@ -37,7 +39,7 @@ public class CarDTO {
 	}
 
 	public Integer getYear() {
-		return year;
+		return this.year;
 	}
 
 	public void setYear(Integer year) {
@@ -45,7 +47,7 @@ public class CarDTO {
 	}
 
 	public CarBrandDTO getCarBrandDTO() {
-		return carBrandDTO;
+		return this.carBrandDTO;
 	}
 
 	public void setCarBrandDTO(CarBrandDTO carBrandDTO) {
@@ -53,7 +55,7 @@ public class CarDTO {
 	}
 
 	public String getModel() {
-		return model;
+		return this.model;
 	}
 
 	public void setModel(String model) {
@@ -61,7 +63,7 @@ public class CarDTO {
 	}
 
 	public List<String> getLstIdImage() {
-		return lstIdImage;
+		return this.lstIdImage;
 	}
 
 	public void setLstIdImage(List<String> lstIdImage) {

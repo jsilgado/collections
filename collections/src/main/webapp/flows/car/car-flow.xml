@@ -23,8 +23,8 @@
 			<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
 		</transition>
 
-		<transition on="detail" to="car" validate="false">
-			<evaluate expression="carController.detailCar(requestParameters.idCar)" ></evaluate>
+		<transition on="edit" to="carnewedit" validate="false">
+			<evaluate expression="carController.getById(requestParameters.idCar)" result="flowScope.car"></evaluate>
 		</transition>
 
 		<transition on="new" to="carnewedit" validate="false">

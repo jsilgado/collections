@@ -20,45 +20,104 @@
 			<ui:include src="/flows/common/loading.xhtml" />
 
 			<h:panelGroup layout="block">
-				<p:messages id="msgs" showDetail="false" autoUpdate="true" closable="true"/>
+				<p:messages id="msgs" showDetail="false" autoUpdate="true"
+					closable="true" />
 			</h:panelGroup>
 
 			<p:panel header="Create a new car" style="margin-bottom:20px">
-				<h:panelGrid columns="2" cellpadding="5">
+				<h:panelGrid columns="2"   columnClasses="percent0, percent50">
+
+					<p:outputPanel id="data">
+						<h:panelGrid columns="2">
+
+							<h:outputLabel value="TradeMark : *" for="txt_trademark"></h:outputLabel>
+							<p:selectOneMenu id="txt_trademark" value="#{car.trademark.id}"
+								required="true" label="TradeMark">
+								<f:selectItem itemLabel="Select One" itemValue="" />
+								<f:selectItems value="#{carTrademarks}"
+									itemValue="#{carTrademark.id}" var="carTrademark"
+									itemLabel="#{carTrademark.name}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel value="Brand : *" for="txt_brand"></h:outputLabel>
+							<p:selectOneMenu id="txt_brand" value="#{car.brand.id}"
+								label="Brand">
+								<f:selectItem itemLabel="Select One" itemValue="" />
+								<f:selectItems value="#{carBrands}" itemValue="#{carBrand.id}"
+									var="carBrand" itemLabel="#{carBrand.name}" />
+							</p:selectOneMenu>
+
+							<h:outputLabel value="Model : *" for="txt_model"></h:outputLabel>
+							<p:inputText id="txt_model" value="#{car.model}" required="true"
+								label="Model" />
+
+							<h:outputLabel value="Year : *" for="txt_year"></h:outputLabel>
+							<p:inputText id="txt_year" value="#{car.year}" required="true"
+								label="Year">
+								<f:validateDoubleRange minimum="1900" maximum="2100" />
+							</p:inputText>
 
 
-					<h:outputLabel value="TradeMark : *" for="txt_trademark"></h:outputLabel>
-					<p:selectOneMenu id="txt_trademark" value="#{car.trademark.id}" required="true" label="TradeMark">
-						<f:selectItem itemLabel="Select One" itemValue="" />
-						<f:selectItems value="#{carTrademarks}" itemValue="#{carTrademark.id}" var="carTrademark" itemLabel="#{carTrademark.name}"	 />
-					</p:selectOneMenu>
+							<p:outputLabel value="Image : *" for="txt_file" />
+							<p:fileUpload id="txt_file"
+								fileUploadListener="#{carController.handleFileUpload}"
+								mode="advanced" dragDropSupport="true" multiple="true"
+								sizeLimit="10000000" fileLimit="3"
+								allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
 
-					<h:outputLabel value="Brand : *" for="txt_brand"></h:outputLabel>
-					<p:selectOneMenu id="txt_brand" value="#{car.brand.id}" label="Brand">
-						<f:selectItem itemLabel="Select One" itemValue="" />
-						<f:selectItems value="#{carBrands}" itemValue="#{carBrand.id}" var="carBrand" itemLabel="#{carBrand.name}"	 />
-					</p:selectOneMenu>
+								<f:attribute name="myparamName" value="#{car}" />
 
-					<h:outputLabel value="Model : *" for="txt_model"></h:outputLabel>
-					<p:inputText id="txt_model" value="#{car.model}" required="true" label="Model"/>
+							</p:fileUpload>
+						</h:panelGrid>
+					</p:outputPanel>
 
-                    <h:outputLabel value="Year : *" for="txt_year"></h:outputLabel>
-					<p:inputText id="txt_year" value="#{car.year}" required="true" label="Year">
-						<f:validateDoubleRange minimum="1900" maximum="2100" />
-					</p:inputText>
+					<p:outputPanel id="listImages">
+						<p:dataTable id="carBrandsTable" value="#{car.lstImagenBean}"
+							var="item">
 
-                    <p:outputLabel value="Image : *"  for="txt_file"/>
-					<p:fileUpload id="txt_file" fileUploadListener="#{carController.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                 				 multiple="true" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+							<f:facet name="header">
+                    			List of Images
+                   			</f:facet>
 
+							<p:column headerText="Image">
+								<p:graphicImage value="#{item.url}" title="Image" width="326"
+									height="184" />
+							</p:column>
 
+							<p:column headerText="Action">
+								<p:commandButton title="Delete" ajax="false" action="delete"
+									icon="fa fa-trash" onclick="PF('loading').show();"
+									oncomplete="PF('loading').hide();">
+									<f:param name="idCarBrand" value="#{item.id}"></f:param>
+								</p:commandButton>
+							</p:column>
+
+							<f:facet name="footer">
+					        In total there are #{fn:length(car.lstImagenBean)} images.
+							</f:facet>
+						</p:dataTable>
+					</p:outputPanel>
 				</h:panelGrid>
 
-				<p:commandButton id="btn_back" value="Back" ajax="false"  action="back" icon="fa fa-backward" immediate="true" onclick="PF('loading').show();" />
 
-				<p:commandButton id="btn_reset" value="Reset" action="reinit" icon="fa fa-refresh" immediate="true" onclick="PF('loading').show();" oncomplete="PF('loading').hide();"/>
 
-				<p:commandButton id="btn_save" value="Save" ajax="false" action="add" icon="fa fa-check" onclick="PF('loading').show();"/>
+
+
+
+
+
+
+
+				<p:commandButton id="btn_back" value="Back" ajax="false"
+					action="back" icon="fa fa-backward" immediate="true"
+					onclick="PF('loading').show();" />
+
+				<p:commandButton id="btn_reset" value="Reset" action="reinit"
+					icon="fa fa-refresh" immediate="true"
+					onclick="PF('loading').show();" oncomplete="PF('loading').hide();" />
+
+				<p:commandButton id="btn_save" value="Save" ajax="false"
+					action="add" icon="fa fa-check" onclick="PF('loading').show();" />
 
 			</p:panel>
 

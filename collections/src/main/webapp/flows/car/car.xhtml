@@ -78,11 +78,11 @@
 							<f:param name="idCar" value="#{item.id}"></f:param>
 							<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
 			        	</p:commandButton>
-			        	<p:commandButton title="Photos" update=":form :carDialog" onclick="PF('carDialog').show();" icon="fa fa-camera" >
+			        	<p:commandButton title="Photos" update="form:carDialog" oncomplete="PF('carDialog').show();" icon="fa fa-camera" disabled="#{item.lstImagenBean.size() == 0}">
 			        		<f:setPropertyActionListener target="#{car}" value="#{item}" />
 			             </p:commandButton>
 
-			             <p:commandButton title="Edit" icon="fa fa-edit" type="button">
+			             <p:commandButton title="Edit" icon="fa fa-edit" action="edit">
 			             	<f:param name="idCar" value="#{item.id}"></f:param>
 			             </p:commandButton>
 					</p:column>
@@ -129,8 +129,8 @@
 
 			       <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
 					    slideshowAuto="false">
-					    <ui:repeat value="#{car.lstUrlImage}" var="image" id="manuelSwitcherImages">
-					        <p:graphicImage value="#{image}" id="image"/>
+					    <ui:repeat value="#{car.lstImagenBean}" var="image" id="manuelSwitcherImages">
+					        <p:graphicImage value="#{image.url}" id="image" height="613" width="1088"/>
 					    </ui:repeat>
 					</p:imageSwitch>
 			  </p:dialog>

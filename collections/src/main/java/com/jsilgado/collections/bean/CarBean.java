@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.primefaces.model.UploadedFile;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,18 +21,13 @@ public class CarBean implements Serializable {
 
 	private String model;
 
-	private List<String> lstIdImage;
-
-	private List<String> lstUrlImage;
-
-	private List<UploadedFile> lstFiles;
+	private List<ImageBean> lstImagenBean;
 
 	public CarBean() {
 		super();
 		this.trademark = new CarTrademarkBean();
 		this.brand = new CarBrandBean();
-		this.lstFiles = new ArrayList<>();
-		this.lstIdImage = new ArrayList<>();
+		this.lstImagenBean = new ArrayList<>();
 	}
 
 	public String getId() {
@@ -76,28 +70,12 @@ public class CarBean implements Serializable {
 		this.trademark = trademark;
 	}
 
-	public List<String> getLstIdImage() {
-		return this.lstIdImage;
+	public List<ImageBean> getLstImagenBean() {
+		return this.lstImagenBean;
 	}
 
-	public void setLstIdImage(List<String> lstIdImage) {
-		this.lstIdImage = lstIdImage;
-	}
-
-	public List<UploadedFile> getLstFiles() {
-		return this.lstFiles;
-	}
-
-	public void setLstFiles(List<UploadedFile> lstFiles) {
-		this.lstFiles = lstFiles;
-	}
-
-	public List<String> getLstUrlImage() {
-		return this.lstUrlImage;
-	}
-
-	public void setLstUrlImage(List<String> lstUrlImage) {
-		this.lstUrlImage = lstUrlImage;
+	public void setLstImagenBean(List<ImageBean> lstImagenBean) {
+		this.lstImagenBean = lstImagenBean;
 	}
 
 }

@@ -1,19 +1,14 @@
 package com.jsilgado.collections.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +18,11 @@ import org.springframework.util.StringUtils;
 import com.jsilgado.collections.bean.CarBean;
 import com.jsilgado.collections.bean.CarBrandBean;
 import com.jsilgado.collections.bean.CarTrademarkBean;
+import com.jsilgado.collections.bean.ImageBean;
 import com.jsilgado.collections.exception.HelperException;
 import com.jsilgado.collections.helper.CarBrandHelper;
 import com.jsilgado.collections.helper.CarHelper;
 import com.jsilgado.collections.helper.CarTrademarkHelper;
-import com.jsilgado.collections.helper.FileHelper;
 
 @ManagedBean(name = "carController")
 @RequestScoped
@@ -45,18 +40,12 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 	@Autowired
 	private CarBrandHelper carBrandHelper;
 
-	@Autowired
-	private FileHelper fileHelper;
-
-	private List<String> lstUrlImage;
-
 	private List<UploadedFile> lstFiles;
 
 	@Override
 	public CarBean initialize() {
 
 		this.lstFiles = new ArrayList<>();
-		this.lstUrlImage = new ArrayList<>();
 		return new CarBean();
 	}
 
@@ -108,8 +97,18 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 
 	@Override
 	public CarBean getById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		CarBean carBean = null;
+
+		try {
+
+			carBean = this.carHelper.getCar(id);
+
+		} catch (HelperException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCodeError(), e.getDescription()));
+		}
+
+		return carBean;
 	}
 
 	@Override
@@ -118,25 +117,21 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 		try {
 			if (this.validateCar(car)) {
 
-				List<InputStream> lstStream = new ArrayList<>();
-
 				for (Object element : this.lstFiles) {
 					UploadedFile uploadedFile = (UploadedFile) element;
-					lstStream.add(uploadedFile.getInputstream());
+					ImageBean imageBean = new ImageBean();
+					imageBean.setFile(uploadedFile);
+					car.getLstImagenBean().add(imageBean);
 				}
 
-				this.carHelper.insertCar(car, lstStream);
+				this.carHelper.insertCar(car);
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Se ha insertado correctamente"));
 			}
 		} catch (HelperException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCodeError(), e.getDescription()));
-		} catch (IOException e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, null, e.getMessage()));
 		}
-
 	}
 
 	@Override
@@ -179,41 +174,12 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 		return bExit;
 	}
 
-	public void detailCar(String id) {
-
-		try {
-
-			this.lstUrlImage.clear();
-			CarBean carBean = this.carHelper.getCar(id);
-			this.lstUrlImage.addAll(this.fileHelper.getUrlFile(carBean.getLstIdImage()));
-
-			Map<String, Object> options = new HashMap<String, Object>();
-			options.put("resizable", false);
-			options.put("draggable", false);
-			options.put("modal", true);
-			RequestContext.getCurrentInstance().openDialog("carDialog", options, null);
-
-		} catch (HelperException e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCodeError(), e.getDescription()));
-		}
-
-	}
-
 	public void handleFileUpload(FileUploadEvent event) {
 		FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
 		FacesContext.getCurrentInstance().addMessage(null, message);
 
 		this.getLstFiles().add(event.getFile());
 
-	}
-
-	public List<String> getLstUrlImage() {
-		return this.lstUrlImage;
-	}
-
-	public void setLstUrlImage(List<String> lstUrlImage) {
-		this.lstUrlImage = lstUrlImage;
 	}
 
 	public List<UploadedFile> getLstFiles() {
