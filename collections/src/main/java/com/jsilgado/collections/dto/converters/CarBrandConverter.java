@@ -13,10 +13,9 @@ public class CarBrandConverter {
 
 	public static CarBrandBean toBean(CarBrandDTO input) {
 
-		CarBrandBean output = null;
+		CarBrandBean output = new CarBrandBean();
 
 		if (input != null) {
-			output = new CarBrandBean();
 			output.setId(input.getId());
 			output.setName(input.getName());
 			output.setIdImage(input.getIdImage());

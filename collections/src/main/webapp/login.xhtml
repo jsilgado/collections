@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags">
+
+<ui:composition template="/layouts/layoutLogin.xhtml">
+
+
+	<ui:define name="title">
+		<h:outputText value="#{msg.header_title}" />
+	</ui:define>
+
+	<ui:define name="content">
+		<c:if test="${not empty param.login_error}">
+			<div class="ui-messages-error ui-corner-all">
+				<h:outputText value="#{msg.login_errorLogin}" />
+				Reason: #{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
+			</div>
+		</c:if>
+
+		<form name="f" action="${request.contextPath}/spring/loginProcess"
+			method="post">
+			<h:form>
+				<p:fieldset legend="#{msg.login_access}">
+					<h:panelGrid columns="2" cellpadding="5">
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+						<h:panelGrid id="loginPanel" columns="2" width="100%"
+							columnClasses="login,porcen60">
+							<h:outputText value="#{msg.login_user}" />
+							<c:if test="${not empty param.login_error}">
+								<c:set var="username"
+									value="${sessionScope.SPRING_SECURITY_LAST_USERNAME}" />
+							</c:if>
+							<input type="text" name="j_username" value="#{username}" />
+							<h:outputText value="#{msg.login_pass}" />
+							<input type="password" name="j_password" />
+						</h:panelGrid>
+
+						<h:panelGroup layout="block" />
+						<h:panelGroup layout="block">
+							<h:panelGrid columns="1" cellpadding="0" width="100%"
+								cellspacing="0" border="0">
+								<h:panelGrid columns="1" width="100%" border="0">
+
+									<p:commandButton id="submitButton" value="#{msg.button_accept}"
+										title="#{msg.button_accept}" onclick="submit()" />
+
+								</h:panelGrid>
+							</h:panelGrid>
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:fieldset>
+
+			</h:form>
+		</form>
+	</ui:define>
+</ui:composition>
+</html>

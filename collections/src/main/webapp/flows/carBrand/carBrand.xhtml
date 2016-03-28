@@ -75,7 +75,7 @@
 					</p:column>
 
 					<p:column headerText="Action">
-						<p:commandButton title="Delete" ajax="false" action="delete"
+						<p:commandButton title="Delete" ajax="false" action="delete" immediate="true"
 							icon="fa fa-trash" onclick="PF('loading').show();"
 							oncomplete="PF('loading').hide();">
 							<f:param name="idCarBrand" value="#{item.id}"></f:param>

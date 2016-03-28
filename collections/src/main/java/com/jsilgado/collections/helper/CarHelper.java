@@ -97,6 +97,24 @@ public class CarHelper implements Serializable {
 		}
 	}
 
+	public void updateCar(CarBean carbean) throws HelperException {
+
+		CarDTO carDTO = CarConverter.toDTO(carbean);
+
+		Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
+
+		WebTarget webTarget = client.target(this.restUrl).path("car").path("updateCar");
+
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(carDTO, MediaType.APPLICATION_JSON));
+
+		if (response.getStatus() != 200) {
+			throw new HelperException(Integer.toString(response.getStatus()),
+					"Failed : HTTP error code : " + response.getStatus());
+		}
+
+	}
+
 	public void deleteCar(String idCar) throws HelperException {
 
 		Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));

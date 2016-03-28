@@ -40,6 +40,11 @@
 			<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
 		</transition>
 
+		<transition on="edit" to="car" validate="true">
+			<evaluate expression="carController.update(flowScope.car)"></evaluate>
+			<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
+		</transition>
+
 		<transition on="reinit" to="carnewedit" validate="false">
 			<evaluate expression="carController.initialize()" result="flowScope.car"></evaluate>
 		</transition>

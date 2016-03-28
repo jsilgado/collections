@@ -135,8 +135,18 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 	}
 
 	@Override
-	public void update(CarBean t) {
-		// TODO Auto-generated method stub
+	public void update(CarBean car) {
+		try {
+			if (this.validateCar(car)) {
+
+				this.carHelper.updateCar(car);
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Se ha editado correctamente"));
+			}
+		} catch (HelperException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCodeError(), e.getDescription()));
+		}
 
 	}
 
@@ -165,11 +175,12 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 			bExit = false;
 		}
 
-		if (StringUtils.isEmpty(car.getBrand())) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Brand is required"));
-			bExit = false;
-		}
+		// if (StringUtils.isEmpty(car.getBrand())) {
+		// FacesContext.getCurrentInstance().addMessage(null,
+		// new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Brand is
+		// required"));
+		// bExit = false;
+		// }
 
 		return bExit;
 	}

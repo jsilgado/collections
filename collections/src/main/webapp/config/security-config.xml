@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- Configure Spring Security -->
+	<security:http auto-config="true" use-expressions="true">
+		<security:form-login login-page="/spring/login" login-processing-url="/spring/loginProcess"
+			default-target-url="/spring/welcome" authentication-failure-url="/spring/login?login_error=1" />
+<!-- 		<security:logout logout-success-url="/spring/logout"
+			invalidate-session="true" logout-url="/spring/logout" /> -->
+		<security:logout  logout-url="/spring/logout" invalidate-session="true"/>
+	</security:http>
+
+
+
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+        	<security:password-encoder hash="md5" />
+        	<security:user-service>
+
+                <security:user name="admin" password="21232f297a57a5a743894a0e4a801fc3" authorities="ROLE_ADMIN" />
+                <security:user name="jsilgado" password="23db575afbdea00fe06071ebb753cd3e" authorities="ROLE_USER" />
+
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+</beans>

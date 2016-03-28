@@ -23,7 +23,7 @@
 				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
 			</h:panelGroup>
 
-			<p:panel header="Create a new car" style="margin-bottom:20px">
+			<p:panel header="Create a new car" style="margin-bottom:20px" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}">
 				<h:panelGrid columns="2" cellpadding="5">
 
 					<p:commandButton value="New" ajax="false" action="new" icon="fa fa-plus" onclick="PF('loading').show();" oncomplete="PF('loading').hide();"/>
@@ -74,7 +74,7 @@
 					</p:column>
 
 					<p:column headerText="Action" exportable="false">
-						<p:commandButton title="Delete" icon="fa fa-trash" action="delete">
+						<p:commandButton title="Delete" icon="fa fa-trash" action="delete" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}">
 							<f:param name="idCar" value="#{item.id}"></f:param>
 							<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
 			        	</p:commandButton>
@@ -82,7 +82,7 @@
 			        		<f:setPropertyActionListener target="#{car}" value="#{item}" />
 			             </p:commandButton>
 
-			             <p:commandButton title="Edit" icon="fa fa-edit" action="edit">
+			             <p:commandButton title="Edit" icon="fa fa-edit" action="edit" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}">
 			             	<f:param name="idCar" value="#{item.id}"></f:param>
 			             </p:commandButton>
 					</p:column>

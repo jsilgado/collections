@@ -48,13 +48,13 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-	<!-- Primefaces Theme  -->
+	<!-- Primefaces Theme -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>redmond</param-value>
 	</context-param>
 
-	<!-- Primefaces Font Awesome for icons  -->
+	<!-- Primefaces Font Awesome for icons -->
 	<context-param>
 		<param-name>primefaces.FONT_AWESOME</param-name>
 		<param-value>true</param-value>
@@ -77,6 +77,16 @@
 		<param-name>primefaces.UPLOADER</param-name>
 		<param-value>commons</param-value>
 	</context-param>
+
+	<!-- Spring Security -->
+	<filter>
+  		<filter-name>springSecurityFilterChain</filter-name>
+  		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+ 	</filter>
+	<filter-mapping>
+  		<filter-name>springSecurityFilterChain</filter-name>
+  		<url-pattern>/*</url-pattern>
+ 	</filter-mapping>
 
 	<!-- Just here so the JSF implementation can initialize, *not* used at runtime -->
 	<servlet>

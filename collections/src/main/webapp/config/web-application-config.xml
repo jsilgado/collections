@@ -23,6 +23,6 @@
    	<!-- Importa las configuraciones de las difentes capas de las aplicación web -->
 	<import resource="webmvc-config.xml" />
 	<import resource="webflow-config.xml" />
-	<!-- <import resource="security-config.xml" />  -->
+	<import resource="security-config.xml" />
 
 </beans>

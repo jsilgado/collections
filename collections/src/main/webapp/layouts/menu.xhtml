@@ -16,9 +16,9 @@
 					<p:menuitem value="#{msg.menu_cars}" title="#{msg.menu_cars}"
 						url="/spring/car" onclick="PF('loading').show();"/>
 					<p:menuitem value="#{msg.menu_carTramdemarks}"
-						title="#{msg.menu_carTramdemarks}" url="/spring/carTrademark"  onclick="PF('loading').show();"/>
+						title="#{msg.menu_carTramdemarks}" url="/spring/carTrademark"  onclick="PF('loading').show();" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}"/>
 					<p:menuitem value="#{msg.menu_carBrands}"
-						title="#{msg.menu_carBrands}" url="/spring/carBrand"  onclick="PF('loading').show();"/>
+						title="#{msg.menu_carBrands}" url="/spring/carBrand"  onclick="PF('loading').show();" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}"/>
 				</p:submenu>
 				<p:submenu label="#{msg.menu_beers}">
 					<p:menuitem value="#{msg.menu_beers}" title="#{msg.menu_beers}"

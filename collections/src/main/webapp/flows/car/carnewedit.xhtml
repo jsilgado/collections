@@ -39,7 +39,7 @@
 									itemLabel="#{carTrademark.name}" />
 							</p:selectOneMenu>
 
-							<h:outputLabel value="Brand : *" for="txt_brand"></h:outputLabel>
+							<h:outputLabel value="Brand : " for="txt_brand"></h:outputLabel>
 							<p:selectOneMenu id="txt_brand" value="#{car.brand.id}"
 								label="Brand">
 								<f:selectItem itemLabel="Select One" itemValue="" />
@@ -100,14 +100,6 @@
 				</h:panelGrid>
 
 
-
-
-
-
-
-
-
-
 				<p:commandButton id="btn_back" value="Back" ajax="false"
 					action="back" icon="fa fa-backward" immediate="true"
 					onclick="PF('loading').show();" />
@@ -116,8 +108,11 @@
 					icon="fa fa-refresh" immediate="true"
 					onclick="PF('loading').show();" oncomplete="PF('loading').hide();" />
 
-				<p:commandButton id="btn_save" value="Save" ajax="false"
-					action="add" icon="fa fa-check" onclick="PF('loading').show();" />
+				<p:commandButton id="btn_new" value="New" ajax="false"
+					action="add" icon="fa fa-check" onclick="PF('loading').show();" rendered="#{car.id == null}"/>
+
+				<p:commandButton id="btn_edit" value="Edit" ajax="false"
+					action="edit" icon="fa fa-check" onclick="PF('loading').show();" rendered="#{car.id != null}"/>
 
 			</p:panel>
 

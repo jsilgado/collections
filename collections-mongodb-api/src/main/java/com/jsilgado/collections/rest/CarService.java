@@ -62,6 +62,37 @@ public class CarService {
 		return Response.ok().build();
 	}
 
+	@POST
+	@Path("/updateCar")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response update(CarDTO carDTO) {
+
+		Car car = this.mongotemplate.findOne(new Query(Criteria.where("id").is(carDTO.getId())), Car.class);
+
+		if (carDTO.getCarTrademarkDTO() != null && carDTO.getCarTrademarkDTO().getId() != null) {
+			CarTrademark carTrademark = this.mongotemplate.findOne(
+					new Query(Criteria.where("id").is(carDTO.getCarTrademarkDTO().getId())), CarTrademark.class);
+			car.setTrademark(carTrademark);
+		} else {
+			car.setTrademark(null);
+		}
+
+		if (carDTO.getCarBrandDTO() != null && carDTO.getCarBrandDTO().getId() != null) {
+			CarBrand carBrand = this.mongotemplate
+					.findOne(new Query(Criteria.where("id").is(carDTO.getCarBrandDTO().getId())), CarBrand.class);
+			car.setBrand(carBrand);
+		} else {
+			car.setBrand(null);
+		}
+
+		car.setModel(carDTO.getModel());
+		car.setYear(carDTO.getYear());
+
+		this.mongotemplate.save(car);
+
+		return Response.ok().build();
+	}
+
 	@GET
 	@Path("/getCar/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
