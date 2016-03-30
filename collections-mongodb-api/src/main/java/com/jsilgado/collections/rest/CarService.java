@@ -69,7 +69,7 @@ public class CarService {
 
 		Car car = this.mongotemplate.findOne(new Query(Criteria.where("id").is(carDTO.getId())), Car.class);
 
-		if (carDTO.getCarTrademarkDTO() != null && carDTO.getCarTrademarkDTO().getId() != null) {
+		if (carDTO.getCarTrademarkDTO() != null && !StringUtils.isEmpty(carDTO.getCarTrademarkDTO().getId())) {
 			CarTrademark carTrademark = this.mongotemplate.findOne(
 					new Query(Criteria.where("id").is(carDTO.getCarTrademarkDTO().getId())), CarTrademark.class);
 			car.setTrademark(carTrademark);
@@ -77,7 +77,7 @@ public class CarService {
 			car.setTrademark(null);
 		}
 
-		if (carDTO.getCarBrandDTO() != null && carDTO.getCarBrandDTO().getId() != null) {
+		if (carDTO.getCarBrandDTO() != null && !StringUtils.isEmpty(carDTO.getCarBrandDTO().getId())) {
 			CarBrand carBrand = this.mongotemplate
 					.findOne(new Query(Criteria.where("id").is(carDTO.getCarBrandDTO().getId())), CarBrand.class);
 			car.setBrand(carBrand);
@@ -87,6 +87,9 @@ public class CarService {
 
 		car.setModel(carDTO.getModel());
 		car.setYear(carDTO.getYear());
+		car.setLstIdImage(carDTO.getLstIdImage());
+		car.setManufacturingNumber(carDTO.getManufacturingNumber());
+		car.setRating(carDTO.getRating());
 
 		this.mongotemplate.save(car);
 

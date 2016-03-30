@@ -67,11 +67,9 @@
 
 					<p:column headerText="Image">
 						<p:graphicImage value="/images/carBrand/Brand-black.png"
-							rendered="#{item.urlImage == null}" title="No image" width="60"
-							height="60" />
-						<p:graphicImage value="#{item.urlImage}"
-							rendered="#{item.urlImage != null}" title="Image" width="60"
-							height="60" />
+							rendered="#{item.imageBean.url == null}" title="No image" width="60" height="60" />
+						<p:graphicImage value="#{item.imageBean.url}"
+							rendered="#{item.imageBean.url != null}" title="Image" width="60" height="60" />
 					</p:column>
 
 					<p:column headerText="Action">

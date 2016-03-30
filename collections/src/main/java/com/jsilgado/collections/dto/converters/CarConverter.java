@@ -24,6 +24,8 @@ public class CarConverter {
 			output.setBrand(CarBrandConverter.toBean(input.getCarBrandDTO()));
 			output.setModel(input.getModel());
 			output.setYear(input.getYear());
+			output.setManufacturingNumber(input.getManufacturingNumber());
+			output.setRating(input.getRating());
 			if (input.getLstIdImage() != null) {
 				for (String idImage : input.getLstIdImage()) {
 					output.getLstImagenBean().add(new ImageBean(idImage));
@@ -63,7 +65,8 @@ public class CarConverter {
 			output.setCarBrandDTO(CarBrandConverter.toDTO(input.getBrand()));
 			output.setModel(input.getModel());
 			output.setYear(input.getYear());
-
+			output.setManufacturingNumber(input.getManufacturingNumber());
+			output.setRating(input.getRating());
 			if (input.getLstImagenBean() != null) {
 				for (ImageBean imageBean : input.getLstImagenBean()) {
 					output.getLstIdImage().add(imageBean.getId());

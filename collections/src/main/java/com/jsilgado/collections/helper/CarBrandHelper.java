@@ -1,6 +1,6 @@
 package com.jsilgado.collections.helper;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,6 @@ import org.glassfish.jersey.filter.LoggingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.jsilgado.collections.bean.CarBrandBean;
 import com.jsilgado.collections.dto.CarBrandDTO;
@@ -38,52 +37,58 @@ public class CarBrandHelper implements Serializable {
 
 	public List<CarBrandBean> getAllCarBrand() throws HelperException {
 
-		Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
-		WebTarget webTarget = client.target(this.restUrl).path("carBrand").path("getAllCarBrand");
-		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		List<CarBrandBean> lstCarBrandBean = null;
+		try {
+			Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
+			WebTarget webTarget = client.target(this.restUrl).path("carBrand").path("getAllCarBrand");
+			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 
-		Response response = invocationBuilder.get();
+			Response response = invocationBuilder.get();
 
-		if (response.getStatus() != 200) {
-			throw new HelperException(Integer.toString(response.getStatus()),
-					"Failed : HTTP error code : " + response.getStatus());
-		}
-
-		CarBrandDTO[] list = response.readEntity(CarBrandDTO[].class);
-
-		List<CarBrandBean> lstCarBrandBean = CarBrandConverter.toBean(Arrays.asList(list));
-
-		for (CarBrandBean carBrandBean : lstCarBrandBean) {
-
-			if (!StringUtils.isEmpty(carBrandBean.getIdImage())) {
-				carBrandBean.setUrlImage(this.restUrl + "/getFile/" + carBrandBean.getIdImage());
+			if (response.getStatus() != 200) {
+				throw new HelperException(Integer.toString(response.getStatus()),
+						"Failed : HTTP error code : " + response.getStatus());
 			}
+
+			CarBrandDTO[] list = response.readEntity(CarBrandDTO[].class);
+
+			lstCarBrandBean = CarBrandConverter.toBean(Arrays.asList(list));
+
+			for (CarBrandBean carBrandBean : lstCarBrandBean) {
+				carBrandBean.getImageBean().setUrl(this.fileHelper.getUrlFile(carBrandBean.getImageBean().getId()));
+			}
+		} catch (Exception e) {
+			throw new HelperException(e.getMessage());
 		}
 
 		return lstCarBrandBean;
 
 	}
 
-	public void insertCarBrand(CarBrandBean carBrandBean, InputStream stream) throws HelperException {
+	public void insertCarBrand(CarBrandBean carBrandBean) throws HelperException {
 
-		String idImage = this.fileHelper.uploadFile(stream);
+		try {
+			String idImage = this.fileHelper.uploadFile(carBrandBean.getImageBean().getFile().getInputstream());
 
-		carBrandBean.setIdImage(idImage);
+			carBrandBean.getImageBean().setId(idImage);
+			carBrandBean.getImageBean().setUrl(this.fileHelper.getUrlFile(idImage));
 
-		CarBrandDTO carBrandDTO = CarBrandConverter.toDTO(carBrandBean);
+			CarBrandDTO carBrandDTO = CarBrandConverter.toDTO(carBrandBean);
 
-		Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
+			Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
 
-		WebTarget webTarget = client.target(this.restUrl).path("carBrand").path("insertCarBrand");
+			WebTarget webTarget = client.target(this.restUrl).path("carBrand").path("insertCarBrand");
 
-		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		Response response = invocationBuilder.post(Entity.entity(carBrandDTO, MediaType.APPLICATION_JSON));
+			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+			Response response = invocationBuilder.post(Entity.entity(carBrandDTO, MediaType.APPLICATION_JSON));
 
-		if (response.getStatus() != 200) {
-			throw new HelperException(Integer.toString(response.getStatus()),
-					"Failed : HTTP error code : " + response.getStatus());
+			if (response.getStatus() != 200) {
+				throw new HelperException(Integer.toString(response.getStatus()),
+						"Failed : HTTP error code : " + response.getStatus());
+			}
+		} catch (IOException e) {
+			throw new HelperException(e.getMessage());
 		}
-
 	}
 
 	public void deleteCarBrand(String id) throws HelperException {

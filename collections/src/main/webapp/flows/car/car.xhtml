@@ -32,8 +32,8 @@
 			</p:panel>
 
 			<p:outputPanel id="cars">
-				<p:dataTable value="#{cars}" var="item" id="carsTable" resizableColumns="true" draggableColumns="true"
-						 rows="10"
+				<p:dataTable value="#{cars}" var="item" id="carsTable" resizableColumns="true" draggableColumns="true" rowIndexVar="rowIndex"
+						 rows="5"
                          paginator="true"
                          paginatorPosition="bottom"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -45,32 +45,50 @@
        					<p:columnToggler datasource="carsTable" trigger="toggler" />
                     </f:facet>
 
-					<p:column headerText="Trademark" sortBy="#{item.trademark.name}">
+					<p:column headerText="Trademark" sortBy="#{item.trademark.name}" style="text-align: center">
 						<f:facet name="header">
 							<h:outputText value="TradeMark" />
 						</f:facet>
-						<h:outputText value="#{item.trademark.name}" />
+
+						<p:graphicImage id="trademarkImage" value="#{item.trademark.imageBean.url}" rendered="#{item.trademark.imageBean.url != null}" title="#{item.trademark.name}" width="120" height="60"/>
+						<p:tooltip for="form:carsTable:#{rowIndex}:trademarkImage" value="#{item.trademark.name}" showEffect="clip" hideEffect="explode"/>
 					</p:column>
 
-					<p:column headerText="Brand" sortBy="#{item.brand.name}">
+					<p:column headerText="Brand" sortBy="#{item.brand.name}" style="text-align: center">
 						<f:facet name="header">
 							<h:outputText value="Brand" />
 						</f:facet>
-						<h:outputText value="#{item.brand.name}" />
+						<p:graphicImage id="brandImage" value="#{item.brand.imageBean.url}" rendered="#{item.brand.imageBean != null || item.brand.imageBean.url != null}" title="#{item.brand.name}" width="60" height="60"/>
+
+               			<p:tooltip for="form:carsTable:#{rowIndex}:brandImage" value="#{item.brand.name}" showEffect="clip" hideEffect="explode"/>
 					</p:column>
 
-					<p:column headerText="Model" sortBy="#{item.model}">
+					<p:column headerText="Model" sortBy="#{item.model}" style="text-align: center">
 						<f:facet name="header">
 							<h:outputText value="Model" />
 						</f:facet>
 						<h:outputText value="#{item.model}" />
 					</p:column>
 
-					<p:column headerText="Year" sortBy="#{item.year}">
+					<p:column headerText="Year" sortBy="#{item.year}" style="text-align: center">
 						<f:facet name="header">
 							<h:outputText value="Year" />
 						</f:facet>
 						<h:outputText value="#{item.year}" />
+					</p:column>
+
+					<p:column headerText="Manufacturing Number" sortBy="#{item.manufacturingNumber}" style="text-align: center">
+						<f:facet name="header">
+							<h:outputText value="Manufacturing Number" />
+						</f:facet>
+						<h:outputText value="#{item.manufacturingNumber}"/>
+					</p:column>
+
+					<p:column headerText="Rating" sortBy="#{item.rating}">
+						<f:facet name="header">
+							<h:outputText value="Rating" />
+						</f:facet>
+						<p:rating value="#{item.rating}" readonly="true" />
 					</p:column>
 
 					<p:column headerText="Action" exportable="false">

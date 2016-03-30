@@ -21,6 +21,8 @@ public class CarConverter {
 			output.setYear(input.getYear());
 			output.setTrademark(CarTrademarkConverter.toEntity(input.getCarTrademarkDTO()));
 			output.setLstIdImage(input.getLstIdImage());
+			output.setManufacturingNumber(input.getManufacturingNumber());
+			output.setRating(input.getRating());
 		}
 
 		return output;
@@ -40,6 +42,8 @@ public class CarConverter {
 			output.setYear(input.getYear());
 			output.setCarTrademarkDTO(CarTrademarkConverter.toDTO(input.getTrademark()));
 			output.setLstIdImage(input.getLstIdImage());
+			output.setManufacturingNumber(input.getManufacturingNumber());
+			output.setRating(input.getRating());
 		}
 
 		return output;

@@ -14,10 +14,6 @@
 
 	<view-state id="car" view="car.xhtml">
 
-		<on-entry>
-			<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
-		</on-entry>
-
 		<transition on="delete" to="car" validate="false">
 			<evaluate expression="carController.delete(requestParameters.idCar)"></evaluate>
 			<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
@@ -42,7 +38,12 @@
 
 		<transition on="edit" to="car" validate="true">
 			<evaluate expression="carController.update(flowScope.car)"></evaluate>
+			<evaluate expression="carController.initialize()" result="flowScope.car"></evaluate>
 			<evaluate expression="carController.getAll()" result="flowScope.cars"></evaluate>
+		</transition>
+
+		<transition on="deleteImage" to="carnewedit" validate="false">
+			<evaluate expression="carController.deleteImage(flowScope.car, requestParameters.idImage)"></evaluate>
 		</transition>
 
 		<transition on="reinit" to="carnewedit" validate="false">

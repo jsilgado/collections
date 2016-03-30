@@ -19,6 +19,10 @@ public class Car {
 
 	private String model;
 
+	private String manufacturingNumber;
+
+	private Integer rating;
+
 	private List<String> lstIdImage;
 
 	public Car() {
@@ -71,6 +75,22 @@ public class Car {
 
 	public void setLstIdImage(List<String> lstIdImage) {
 		this.lstIdImage = lstIdImage;
+	}
+
+	public String getManufacturingNumber() {
+		return this.manufacturingNumber;
+	}
+
+	public void setManufacturingNumber(String manufacturingNumber) {
+		this.manufacturingNumber = manufacturingNumber;
+	}
+
+	public Integer getRating() {
+		return this.rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
 	}
 
 }

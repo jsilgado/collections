@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jsilgado.collections.bean.CarBrandBean;
+import com.jsilgado.collections.bean.ImageBean;
 import com.jsilgado.collections.dto.CarBrandDTO;
 
 public class CarBrandConverter {
@@ -18,7 +19,7 @@ public class CarBrandConverter {
 		if (input != null) {
 			output.setId(input.getId());
 			output.setName(input.getName());
-			output.setIdImage(input.getIdImage());
+			output.setImageBean(new ImageBean(input.getIdImage()));
 		}
 
 		return output;
@@ -49,7 +50,9 @@ public class CarBrandConverter {
 			output = new CarBrandDTO();
 			output.setId(input.getId());
 			output.setName(input.getName());
-			output.setIdImage(input.getIdImage());
+			if (input.getImageBean() != null) {
+				output.setIdImage(input.getImageBean().getId());
+			}
 		}
 
 		return output;

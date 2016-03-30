@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jsilgado.collections.bean.CarTrademarkBean;
+import com.jsilgado.collections.bean.ImageBean;
 import com.jsilgado.collections.dto.CarTrademarkDTO;
 
 public class CarTrademarkConverter {
@@ -11,7 +12,7 @@ public class CarTrademarkConverter {
 	private CarTrademarkConverter() {
 	}
 
-	public static CarTrademarkBean toBean( CarTrademarkDTO input ) {
+	public static CarTrademarkBean toBean(CarTrademarkDTO input) {
 
 		CarTrademarkBean output = null;
 
@@ -19,14 +20,14 @@ public class CarTrademarkConverter {
 			output = new CarTrademarkBean();
 			output.setId(input.getId());
 			output.setName(input.getName());
-			output.setIdImage(input.getIdImage());
+			output.setImageBean(new ImageBean(input.getIdImage()));
 		}
 
 		return output;
 
 	}
 
-	public static List<CarTrademarkBean> toBean ( List<CarTrademarkDTO> input ) {
+	public static List<CarTrademarkBean> toBean(List<CarTrademarkDTO> input) {
 
 		List<CarTrademarkBean> output = null;
 
@@ -42,7 +43,7 @@ public class CarTrademarkConverter {
 
 	}
 
-	public static CarTrademarkDTO toDTO( CarTrademarkBean input ) {
+	public static CarTrademarkDTO toDTO(CarTrademarkBean input) {
 
 		CarTrademarkDTO output = null;
 
@@ -50,14 +51,16 @@ public class CarTrademarkConverter {
 			output = new CarTrademarkDTO();
 			output.setId(input.getId());
 			output.setName(input.getName());
-			output.setIdImage(input.getIdImage());
+			if (input.getImageBean() != null) {
+				output.setIdImage(input.getImageBean().getId());
+			}
 		}
 
 		return output;
 
 	}
 
-	public static List<CarTrademarkDTO> toDTO ( List<CarTrademarkBean> input ) {
+	public static List<CarTrademarkDTO> toDTO(List<CarTrademarkBean> input) {
 
 		List<CarTrademarkDTO> output = null;
 

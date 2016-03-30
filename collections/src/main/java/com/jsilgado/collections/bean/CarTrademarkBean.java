@@ -13,9 +13,7 @@ public class CarTrademarkBean implements Serializable {
 
 	private String name;
 
-	private String idImage;
-
-	private String urlImage;
+	private ImageBean imageBean;
 
 	public CarTrademarkBean() {
 		super();
@@ -28,7 +26,7 @@ public class CarTrademarkBean implements Serializable {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -36,27 +34,19 @@ public class CarTrademarkBean implements Serializable {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getIdImage() {
-		return idImage;
+	public ImageBean getImageBean() {
+		return this.imageBean;
 	}
 
-	public void setIdImage(String idImage) {
-		this.idImage = idImage;
-	}
-
-	public String getUrlImage() {
-		return urlImage;
-	}
-
-	public void setUrlImage(String urlImage) {
-		this.urlImage = urlImage;
+	public void setImageBean(ImageBean imageBean) {
+		this.imageBean = imageBean;
 	}
 
 }

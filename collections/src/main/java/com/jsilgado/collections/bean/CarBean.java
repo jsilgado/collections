@@ -21,6 +21,10 @@ public class CarBean implements Serializable {
 
 	private String model;
 
+	private String manufacturingNumber;
+
+	private Integer rating;
+
 	private List<ImageBean> lstImagenBean;
 
 	public CarBean() {
@@ -78,4 +82,19 @@ public class CarBean implements Serializable {
 		this.lstImagenBean = lstImagenBean;
 	}
 
+	public String getManufacturingNumber() {
+		return this.manufacturingNumber;
+	}
+
+	public void setManufacturingNumber(String manufacturingNumber) {
+		this.manufacturingNumber = manufacturingNumber;
+	}
+
+	public Integer getRating() {
+		return this.rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
+	}
 }

@@ -1,8 +1,7 @@
 package com.jsilgado.collections.helper;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,13 +13,11 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.jsilgado.collections.bean.CarTrademarkBean;
 import com.jsilgado.collections.dto.CarTrademarkDTO;
@@ -40,58 +37,61 @@ public class CarTrademarkHelper implements Serializable {
 
 	public List<CarTrademarkBean> getAllCarTrademark() throws HelperException {
 
-		Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
-		WebTarget webTarget = client.target(this.restUrl).path("carTrademark").path("getAllCarTrademark");
-		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		List<CarTrademarkBean> lstCarTrademarkBean = null;
 
-		Response response = invocationBuilder.get();
+		try {
+			Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
+			WebTarget webTarget = client.target(this.restUrl).path("carTrademark").path("getAllCarTrademark");
+			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 
-		if (response.getStatus() != 200) {
-			throw new HelperException(Integer.toString(response.getStatus()),
-					"Failed : HTTP error code : " + response.getStatus());
-		}
+			Response response = invocationBuilder.get();
 
-		CarTrademarkDTO[] list = response.readEntity(CarTrademarkDTO[].class);
-
-		List<CarTrademarkBean> lstCarTrademarkBean = CarTrademarkConverter.toBean(Arrays.asList(list));
-
-		for (CarTrademarkBean carTrademark : lstCarTrademarkBean) {
-
-			if (!StringUtils.isEmpty(carTrademark.getIdImage())) {
-				carTrademark.setUrlImage(this.restUrl + "/getFile/" + carTrademark.getIdImage());
+			if (response.getStatus() != 200) {
+				throw new HelperException(Integer.toString(response.getStatus()),
+						"Failed : HTTP error code : " + response.getStatus());
 			}
+
+			CarTrademarkDTO[] list = response.readEntity(CarTrademarkDTO[].class);
+
+			lstCarTrademarkBean = CarTrademarkConverter.toBean(Arrays.asList(list));
+
+			for (CarTrademarkBean carTrademark : lstCarTrademarkBean) {
+				carTrademark.getImageBean().setUrl(this.fileHelper.getUrlFile(carTrademark.getImageBean().getId()));
+			}
+
+		} catch (Exception e) {
+			throw new HelperException(e.getMessage());
 		}
 
 		return lstCarTrademarkBean;
 
 	}
 
-	public void insertCarTrademark(CarTrademarkBean carTrademarkbean, InputStream stream) throws HelperException {
-
-		String idImage = this.fileHelper.uploadFile(stream);
-
-		carTrademarkbean.setIdImage(idImage);
-
-		CarTrademarkDTO carTrademarkDTO = new CarTrademarkDTO();
+	public void insertCarTrademark(CarTrademarkBean carTrademarkBean) throws HelperException {
 
 		try {
-			PropertyUtils.copyProperties(carTrademarkDTO, carTrademarkbean);
-		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-			throw new HelperException(e.getMessage(), e.getMessage());
+			String idImage = this.fileHelper.uploadFile(carTrademarkBean.getImageBean().getFile().getInputstream());
+
+			carTrademarkBean.getImageBean().setId(idImage);
+			carTrademarkBean.getImageBean().setUrl(this.fileHelper.getUrlFile(idImage));
+
+			CarTrademarkDTO carTrademarkDTO = CarTrademarkConverter.toDTO(carTrademarkBean);
+
+			Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
+
+			WebTarget webTarget = client.target(this.restUrl).path("carTrademark").path("insertCarTrademark");
+
+			Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+			Response response = invocationBuilder.post(Entity.entity(carTrademarkDTO, MediaType.APPLICATION_JSON));
+
+			if (response.getStatus() != 200) {
+				throw new HelperException(Integer.toString(response.getStatus()),
+						"Failed : HTTP error code : " + response.getStatus());
+			}
+
+		} catch (IOException e) {
+			throw new HelperException(e.getMessage());
 		}
-
-		Client client = ClientBuilder.newClient(new ClientConfig().register(LoggingFilter.class));
-
-		WebTarget webTarget = client.target(this.restUrl).path("carTrademark").path("insertCarTrademark");
-
-		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		Response response = invocationBuilder.post(Entity.entity(carTrademarkDTO, MediaType.APPLICATION_JSON));
-
-		if (response.getStatus() != 200) {
-			throw new HelperException(Integer.toString(response.getStatus()),
-					"Failed : HTTP error code : " + response.getStatus());
-		}
-
 	}
 
 	public void deleteCarTrademark(String idCarTrademark) throws HelperException {

@@ -15,6 +15,10 @@ public class CarDTO {
 
 	private String model;
 
+	private String manufacturingNumber;
+
+	private Integer rating;
+
 	private List<String> lstIdImage;
 
 	public CarDTO() {
@@ -70,4 +74,19 @@ public class CarDTO {
 		this.lstIdImage = lstIdImage;
 	}
 
+	public String getManufacturingNumber() {
+		return this.manufacturingNumber;
+	}
+
+	public void setManufacturingNumber(String manufacturingNumber) {
+		this.manufacturingNumber = manufacturingNumber;
+	}
+
+	public Integer getRating() {
+		return this.rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
+	}
 }

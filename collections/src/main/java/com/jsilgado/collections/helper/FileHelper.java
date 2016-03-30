@@ -17,6 +17,7 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.StreamDataBodyPart;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.jsilgado.collections.exception.HelperException;
 
@@ -27,26 +28,29 @@ public class FileHelper {
 	private String restUrl;
 
 	public String uploadFile(InputStream stream) throws HelperException {
+
+		String idFile = null;
+
 		final Client client = ClientBuilder.newBuilder().register(MultiPartFeature.class).build();
 
 		BodyPart bodyPart = new StreamDataBodyPart("file", stream);
-
-		FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
-		final FormDataMultiPart multipart = (FormDataMultiPart) formDataMultiPart.bodyPart(bodyPart);
-
-		final WebTarget webTarget = client.target(this.restUrl).path("uploadFile");
-		final Response response = webTarget.request().post(Entity.entity(multipart, multipart.getMediaType()));
-
-		if (response.getStatus() != 200) {
-			throw new HelperException(Integer.toString(response.getStatus()),
-					"Failed : HTTP error code : " + response.getStatus());
-		}
-
-		String idFile = response.readEntity(String.class);
-
 		try {
+			FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
+			final FormDataMultiPart multipart = (FormDataMultiPart) formDataMultiPart.bodyPart(bodyPart);
+
+			final WebTarget webTarget = client.target(this.restUrl).path("uploadFile");
+			final Response response = webTarget.request().post(Entity.entity(multipart, multipart.getMediaType()));
+
 			formDataMultiPart.close();
 			multipart.close();
+
+			if (response.getStatus() != 200) {
+				throw new HelperException(Integer.toString(response.getStatus()),
+						"Failed : HTTP error code : " + response.getStatus());
+			}
+
+			idFile = response.readEntity(String.class);
+
 		} catch (IOException e) {
 			throw new HelperException(e.getMessage(), e.getMessage());
 		}
@@ -57,7 +61,13 @@ public class FileHelper {
 
 	public String getUrlFile(String idImage) throws HelperException {
 
-		return this.restUrl + "/getFile/" + idImage;
+		String url = null;
+
+		if (!StringUtils.isEmpty(idImage)) {
+			url = this.restUrl + "/getFile/" + idImage;
+		}
+
+		return url;
 
 	}
 

@@ -2,6 +2,7 @@ package com.jsilgado.collections.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -134,10 +135,30 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 		}
 	}
 
+	public void deleteImage(CarBean car, String idImage) {
+
+		Iterator<ImageBean> it = car.getLstImagenBean().iterator();
+
+		while (it.hasNext()) {
+			ImageBean imageBean = it.next();
+			if (idImage.equals(imageBean.getId())) {
+				it.remove();
+			}
+		}
+
+	}
+
 	@Override
 	public void update(CarBean car) {
 		try {
 			if (this.validateCar(car)) {
+
+				for (Object element : this.lstFiles) {
+					UploadedFile uploadedFile = (UploadedFile) element;
+					ImageBean imageBean = new ImageBean();
+					imageBean.setFile(uploadedFile);
+					car.getLstImagenBean().add(imageBean);
+				}
 
 				this.carHelper.updateCar(car);
 				FacesContext.getCurrentInstance().addMessage(null,
@@ -175,20 +196,12 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 			bExit = false;
 		}
 
-		// if (StringUtils.isEmpty(car.getBrand())) {
-		// FacesContext.getCurrentInstance().addMessage(null,
-		// new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Brand is
-		// required"));
-		// bExit = false;
-		// }
-
 		return bExit;
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
-		FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-		FacesContext.getCurrentInstance().addMessage(null, message);
-
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Succesful",
+				event.getFile().getFileName() + " is uploaded."));
 		this.getLstFiles().add(event.getFile());
 
 	}

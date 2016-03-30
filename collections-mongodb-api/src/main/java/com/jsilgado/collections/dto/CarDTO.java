@@ -14,6 +14,10 @@ public class CarDTO {
 
 	private String model;
 
+	private String manufacturingNumber;
+
+	private Integer rating;
+
 	private List<String> lstIdImage;
 
 	public CarDTO() {
@@ -21,7 +25,7 @@ public class CarDTO {
 	}
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -29,7 +33,7 @@ public class CarDTO {
 	}
 
 	public CarTrademarkDTO getCarTrademarkDTO() {
-		return carTrademarkDTO;
+		return this.carTrademarkDTO;
 	}
 
 	public void setCarTrademarkDTO(CarTrademarkDTO carTrademarkDTO) {
@@ -37,7 +41,7 @@ public class CarDTO {
 	}
 
 	public Integer getYear() {
-		return year;
+		return this.year;
 	}
 
 	public void setYear(Integer year) {
@@ -45,7 +49,7 @@ public class CarDTO {
 	}
 
 	public CarBrandDTO getCarBrandDTO() {
-		return carBrandDTO;
+		return this.carBrandDTO;
 	}
 
 	public void setCarBrandDTO(CarBrandDTO carBrandDTO) {
@@ -53,7 +57,7 @@ public class CarDTO {
 	}
 
 	public String getModel() {
-		return model;
+		return this.model;
 	}
 
 	public void setModel(String model) {
@@ -61,12 +65,26 @@ public class CarDTO {
 	}
 
 	public List<String> getLstIdImage() {
-		return lstIdImage;
+		return this.lstIdImage;
 	}
 
 	public void setLstIdImage(List<String> lstIdImage) {
 		this.lstIdImage = lstIdImage;
 	}
 
+	public String getManufacturingNumber() {
+		return this.manufacturingNumber;
+	}
 
+	public void setManufacturingNumber(String manufacturingNumber) {
+		this.manufacturingNumber = manufacturingNumber;
+	}
+
+	public Integer getRating() {
+		return this.rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
+	}
 }

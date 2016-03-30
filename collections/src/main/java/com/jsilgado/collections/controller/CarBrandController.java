@@ -1,6 +1,5 @@
 package com.jsilgado.collections.controller;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 
 import com.jsilgado.collections.bean.CarBrandBean;
+import com.jsilgado.collections.bean.ImageBean;
 import com.jsilgado.collections.exception.HelperException;
 import com.jsilgado.collections.helper.CarBrandHelper;
 
@@ -70,18 +70,19 @@ public class CarBrandController implements ControllerTemplate<CarBrandBean>, Ser
 
 		try {
 			if (this.validateCarBrand(carBrandBean)) {
-				this.carBrandHelper.insertCarBrand(carBrandBean, this.file.getInputstream());
+
+				ImageBean imageBean = new ImageBean();
+				imageBean.setFile(this.file);
+				carBrandBean.setImageBean(imageBean);
+
+				this.carBrandHelper.insertCarBrand(carBrandBean);
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_INFO, "OK", "Se ha insertado correctamente"));
 			}
 		} catch (HelperException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCodeError(), e.getDescription()));
-		} catch (IOException e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 		}
-
 	}
 
 	@Override
