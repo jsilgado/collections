@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layouts/layout.xhtml">
+
+	<ui:define name="title">
+		<h:outputText value="#{msg.header_title}" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="form">
+
+			<ui:include src="/flows/common/loading.xhtml" />
+
+			<h:panelGroup layout="block" styleClass="bloqueMensajes">
+				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+			</h:panelGroup>
+
+			<p:panel header="Search" style="margin-bottom:20px" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}">
+			<p:selectOneMenu id="txt_trademark" value="#{car.trademark.id}" size="500"
+								label="TradeMark" var="item">
+								<f:selectItem itemLabel="Select One" itemValue="" />
+								<f:selectItems value="#{carTrademarks}"
+									itemValue="#{carTrademark.id}" var="carTrademark"
+									itemLabel="#{carTrademark.name}" />
+
+             							</p:selectOneMenu>
+					<p:commandButton value="Search" ajax="false" action="search" icon="fa fa-search" onclick="PF('loading').show();" oncomplete="PF('loading').hide();"/>
+			</p:panel>
+
+			<p:panel header="Create a new car" style="margin-bottom:20px" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}">
+				<h:panelGrid columns="2" cellpadding="5">
+
+					<p:commandButton value="New" ajax="false" action="new" icon="fa fa-plus" onclick="PF('loading').show();" oncomplete="PF('loading').hide();"/>
+
+				</h:panelGrid>
+			</p:panel>
+
+			<p:outputPanel id="cars">
+				<p:dataTable value="#{cars}" var="item" id="carsTable" resizableColumns="true" draggableColumns="true" rowIndexVar="rowIndex"
+						 rows="5"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+
+					<f:facet name="header">
+                    	List of Cars
+                    	<p:commandButton id="toggler" type="button" style="float:right" icon="fa fa-columns" />
+       					<p:columnToggler datasource="carsTable" trigger="toggler" />
+                    </f:facet>
+
+					<p:column headerText="Trademark" sortBy="#{item.trademark.name}" style="text-align: center">
+						<f:facet name="header">
+							<h:outputText value="TradeMark" />
+						</f:facet>
+
+						<p:graphicImage id="trademarkImage" value="#{item.trademark.imageBean.url}" rendered="#{item.trademark.imageBean.url != null}" title="#{item.trademark.name}" width="120" height="60"/>
+						<p:tooltip for="form:carsTable:#{rowIndex}:trademarkImage" value="#{item.trademark.name}" showEffect="clip" hideEffect="explode"/>
+					</p:column>
+
+					<p:column headerText="Brand" sortBy="#{item.brand.name}" style="text-align: center">
+						<f:facet name="header">
+							<h:outputText value="Brand" />
+						</f:facet>
+						<p:graphicImage id="brandImage" value="#{item.brand.imageBean.url}" rendered="#{item.brand.imageBean != null || item.brand.imageBean.url != null}" title="#{item.brand.name}" width="60" height="60"/>
+
+               			<p:tooltip for="form:carsTable:#{rowIndex}:brandImage" value="#{item.brand.name}" rendered="#{item.brand.imageBean != null || item.brand.imageBean.url != null}" showEffect="clip" hideEffect="explode"/>
+					</p:column>
+
+					<p:column headerText="Model" sortBy="#{item.model}" style="text-align: center">
+						<f:facet name="header">
+							<h:outputText value="Model" />
+						</f:facet>
+						<h:outputText value="#{item.model}" />
+					</p:column>
+
+					<p:column headerText="Year" sortBy="#{item.year}" style="text-align: center">
+						<f:facet name="header">
+							<h:outputText value="Year" />
+						</f:facet>
+						<h:outputText value="#{item.year}" />
+					</p:column>
+
+					<p:column headerText="Manufacturing Number" sortBy="#{item.manufacturingNumber}" style="text-align: center">
+						<f:facet name="header">
+							<h:outputText value="Manufacturing Number" />
+						</f:facet>
+						<h:outputText value="#{item.manufacturingNumber}"/>
+					</p:column>
+
+					<p:column headerText="Rating" sortBy="#{item.rating}">
+						<f:facet name="header">
+							<h:outputText value="Rating" />
+						</f:facet>
+						<p:rating value="#{item.rating}" readonly="true" />
+					</p:column>
+
+					<p:column headerText="Action" exportable="false">
+						<p:commandButton title="Delete" icon="fa fa-trash" action="delete" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}">
+							<f:param name="idCar" value="#{item.id}"></f:param>
+							<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+			        	</p:commandButton>
+			        	<p:commandButton title="Photos" update="form:carDialog" oncomplete="PF('carDialog').show();" icon="fa fa-camera" disabled="#{item.lstImagenBean.size() == 0}">
+			        		<f:setPropertyActionListener target="#{car}" value="#{item}" />
+			             </p:commandButton>
+
+			             <p:commandButton title="Edit" icon="fa fa-edit" action="edit" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}">
+			             	<f:param name="idCar" value="#{item.id}"></f:param>
+			             </p:commandButton>
+					</p:column>
+
+					<f:facet name="footer">
+					        In total there are #{fn:length(cars)} cars.
+					</f:facet>
+
+				</p:dataTable>
+
+				<h:commandLink>
+	                <p:graphicImage value="/images/export/excel.png" width="24"/>
+	                <p:dataExporter type="xls" target="carsTable" fileName="cars" />
+	            </h:commandLink>
+
+	            <h:commandLink>
+	                <p:graphicImage value="/images/export/pdf.png" width="24"/>
+	                <p:dataExporter type="pdf" target="carsTable" fileName="cars"/>
+	            </h:commandLink>
+
+	            <h:commandLink>
+	                <p:graphicImage value="/images/export/csv.png" width="24"/>
+	                <p:dataExporter type="csv" target="carsTable" fileName="cars" />
+	            </h:commandLink>
+
+	            <h:commandLink>
+	                <p:graphicImage value="/images/export/xml.png" width="24"/>
+	                <p:dataExporter type="xml" target="carsTable" fileName="cars" />
+	            </h:commandLink>
+
+			</p:outputPanel>
+
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+      			  <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+       			  <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+   			</p:confirmDialog>
+
+			 <p:dialog header="Car Info" id="carDialog" widgetVar="carDialog" showEffect="fade" hideEffect="fade" resizable="false" closable="true" closeOnEscape="true">
+			    	<p:commandButton type="button" onclick="PF('switcher').previous();"
+					    icon="ui-icon-circle-triangle-w" id="prev"/>
+					<p:commandButton type="button" onclick="PF('switcher').next();"
+					    icon="ui-icon-circle-triangle-e" id="next"/>
+
+			       <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
+					    slideshowAuto="false">
+					    <ui:repeat value="#{car.lstImagenBean}" var="image" id="manuelSwitcherImages">
+					        <p:graphicImage value="#{image.url}" id="image" height="613" width="1088"/>
+					    </ui:repeat>
+					</p:imageSwitch>
+			  </p:dialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
+</html>

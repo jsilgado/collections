@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:loadBundle basename="/i18n/MessageResources" var="msg"/>
+<f:loadBundle basename="/application" var="appProperties" />
+
+<h:head>
+  <link rel="stylesheet" href="${request.contextPath}/styles/style.css" type="text/css" media="screen, projection" />
+  <!--  <link rel="stylesheet" href="${request.contextPath}/styles/style-primefaces.css" type="text/css" media="screen, projection" /> -->
+  <link rel="shortcut icon" href="${request.contextPath}/images/favicon.ico" />
+  <script type="text/javascript" src="${request.contextPath}/js/primefaces.locales.js"></script>
+  <title><ui:insert name="title"/></title>
+</h:head>
+
+	<p:layout fullPage="true">
+
+	    <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="false" >
+	    	<ui:include src="header.xhtml"/>
+	    </p:layoutUnit>
+
+	    <p:layoutUnit position="south" size="100" resizable="true" closable="true" collapsible="true" style="text-align:center">
+			<ui:include src="technologies.xhtml"/>
+	    </p:layoutUnit>
+
+	    <p:layoutUnit position="center">
+	       <ui:insert name="content"></ui:insert>
+	    </p:layoutUnit>
+
+	</p:layout>
+
+</html>

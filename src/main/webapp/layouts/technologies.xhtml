@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:form>
+
+	<p:commandButton icon="fa fa-exclamation" style="float:right"
+		onclick="PF('dlgTechnologies').show();" />
+
+	<p:dialog header="Technologies" widgetVar="dlgTechnologies" width="75%" height="50%"
+		appendTo="@(body)">
+
+		<p:accordionPanel activeIndex="0">
+        <p:tab title="Primefaces" >
+        	<p:panelGrid columns="2">
+                <p:panelGrid columns="2">
+				    <f:facet name="header">
+				         <p:graphicImage url="../images/technologies/primefaces.png" height="80" width="140" />
+				    </f:facet>
+
+				 	<h:outputText value="Technology:" />
+				    <h:outputText value="Primefaces" />
+
+				    <h:outputText value="Version:" />
+				    <h:outputText value="5.3" />
+
+				    <h:outputText value="Link:" />
+				    <p:link value="www.primefaces.org" href="http://www.primefaces.org/" target="_blank"></p:link>
+
+				</p:panelGrid>
+				<p:panelGrid columns="2">
+				    <f:facet name="header">
+				         <h:outputText value="Components used:" />
+				    </f:facet>
+
+				 	<h:outputText value="accordionPanel" />
+				 	<p:button target="_blank" href="http://www.primefaces.org/showcase/ui/panel/accordionPanel.xhtml" icon="ui-icon-search" />
+
+				    <h:outputText value="dialog" />
+				    <p:button target="_blank" href="http://www.primefaces.org/showcase/ui/df/basic.xhtml" icon="ui-icon-search" />
+
+				    <h:outputText value="commandButton" />
+				    <p:button target="_blank" href="http://www.primefaces.org/showcase/ui/button/commandButton.xhtml" icon="ui-icon-search" />
+
+				    <h:outputText value="exporter" />
+				    <p:button target="_blank" href="http://www.primefaces.org/showcase/ui/data/dataexporter/basic.xhtml" icon="ui-icon-search" />
+
+
+
+				</p:panelGrid>
+			</p:panelGrid>
+        </p:tab>
+
+        <p:tab title="Spring" >
+        	<p:panelGrid columns="2">
+			    <f:facet name="header">
+			         <p:graphicImage url="../images/technologies/spring.png" height="80" width="80" />
+			    </f:facet>
+
+			 	<h:outputText value="Technology:" />
+			    <h:outputText value="Spring" />
+
+			    <h:outputText value="Version:" />
+			    <h:outputText value="4.2.4" />
+
+			    <h:outputText value="Link:" />
+			    <p:link value="https://spring.io/" href="https://spring.io/" target="_blank"></p:link>
+
+			</p:panelGrid>
+
+        </p:tab>
+
+        <p:tab title="GitHub">
+            <h:panelGrid columns="2" cellpadding="10">
+               <p:graphicImage url="../images/technologies/github.png" height="80" width="80"/>
+            </h:panelGrid>
+        </p:tab>
+    </p:accordionPanel>
+
+	</p:dialog>
+
+</h:form>
+
+</html>

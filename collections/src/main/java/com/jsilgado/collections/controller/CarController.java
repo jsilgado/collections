@@ -66,6 +66,21 @@ public class CarController implements ControllerTemplate<CarBean>, Serializable 
 		return lstCarBean;
 	}
 
+	public List<CarBean> search(CarBean carbean) {
+
+		List<CarBean> lstCarBean = null;
+
+		try {
+			lstCarBean = this.carHelper.getAllCar();
+
+		} catch (HelperException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getCodeError(), e.getDescription()));
+		}
+
+		return lstCarBean;
+	}
+
 	public List<CarTrademarkBean> getAllCarTrademark() {
 
 		List<CarTrademarkBean> lstCarTrademarkBeans = null;

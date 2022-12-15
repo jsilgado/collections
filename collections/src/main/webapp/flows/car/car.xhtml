@@ -23,6 +23,18 @@
 				<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
 			</h:panelGroup>
 
+			<p:panel header="Search" style="margin-bottom:20px" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}">
+			<p:selectOneMenu id="txt_trademark" value="#{car.trademark.id}" size="500"
+								label="TradeMark" var="item">
+								<f:selectItem itemLabel="Select One" itemValue="" />
+								<f:selectItems value="#{carTrademarks}"
+									itemValue="#{carTrademark.id}" var="carTrademark"
+									itemLabel="#{carTrademark.name}" />
+
+             							</p:selectOneMenu>
+					<p:commandButton value="Search" ajax="false" action="search" icon="fa fa-search" onclick="PF('loading').show();" oncomplete="PF('loading').hide();"/>
+			</p:panel>
+
 			<p:panel header="Create a new car" style="margin-bottom:20px" rendered="#{p:ifAnyGranted('ROLE_ADMIN')}">
 				<h:panelGrid columns="2" cellpadding="5">
 
@@ -60,7 +72,7 @@
 						</f:facet>
 						<p:graphicImage id="brandImage" value="#{item.brand.imageBean.url}" rendered="#{item.brand.imageBean != null || item.brand.imageBean.url != null}" title="#{item.brand.name}" width="60" height="60"/>
 
-               			<p:tooltip for="form:carsTable:#{rowIndex}:brandImage" value="#{item.brand.name}" showEffect="clip" hideEffect="explode"/>
+               			<p:tooltip for="form:carsTable:#{rowIndex}:brandImage" value="#{item.brand.name}" rendered="#{item.brand.imageBean != null || item.brand.imageBean.url != null}" showEffect="clip" hideEffect="explode"/>
 					</p:column>
 
 					<p:column headerText="Model" sortBy="#{item.model}" style="text-align: center">

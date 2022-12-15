@@ -1,0 +1,194 @@
+a {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+img {
+	border: none;
+}
+
+textarea {
+	resize: none;
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: inline;
+}
+
+.left {
+    text-align: left;
+}
+
+.center {
+     text-align: center;
+}
+
+.right {
+     text-align: right;
+}
+
+/******************************************************************************************/
+/*************************************** PERCENT*******************************************/
+/******************************************************************************************/
+
+.percent25 {
+	width: 25%;
+}
+
+.percent50 {
+	width: 50%;
+}
+
+.percent75 {
+	width: 75%;
+}
+
+
+/******************************************************************************************/
+/*************************************** LAYOUT *******************************************/
+/******************************************************************************************/
+
+#layout {
+	width: 95%;
+	margin: auto;
+	font-size: 13px;
+	font-family: Verdana;
+}
+
+#header {
+	width: 100%;
+}
+
+
+#menuContent {
+	width: 100%;
+	display: table;
+}
+
+#contentwithoutmenu {
+	width: 100%;
+	display: table;
+}
+
+#content {
+	width: 80%;
+	float: left;
+}
+
+#menu {
+	width: 18%;
+	float: left;
+	margin-right: 2%;
+	padding-top: 10px;
+}
+
+/******************************************************************************************/
+/*************************************** HEADER *******************************************/
+/******************************************************************************************/
+
+#header {
+
+	width: 100%;
+}
+
+#headerLeft {
+	width: 18%;
+	padding-top: 1px;
+	padding-left: 1px;
+	float: left;
+	height: 100px;
+}
+
+#headerRight {
+	float: right;
+	width: 80%;
+	text-align: center;
+	color: #fff;
+	height: 100px;
+	background: #2E64FE;
+}
+
+#headerRight h1 {
+	margin: 5px 0;
+	padding: 0;
+	font-size: 2.0em;
+	font-family: Verdana;
+	font-weight: normal;
+}
+
+#headerRight h2 {
+	margin: 5px 0;
+	padding: 0;
+	font-size: 1em;
+	font-family: Verdana;
+	font-weight: normal;
+}
+
+#headerRight a {
+	color: #fff;
+}
+
+.usuarioLogado {
+	float: left;
+	width: 46%;
+	text-align: left;
+	padding-left: 2%;
+}
+
+/********************************************************************************************/
+/**************************************** CALENDAR ******************************************/
+/********************************************************************************************/
+
+.calendar button {
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+}
+
+.calendar input {
+	font-size: 0.9em;
+	width: 60%;
+}
+
+
+/********************************************************************************************/
+/****************************************** TABLE *******************************************/
+/********************************************************************************************/
+.colourfileodd {
+	background: #A9F5F2;
+}
+
+.colourfileeven {
+	background: #58FAF4;
+}
+
+/********************************************************************************************/
+/***************************************** SELECT *******************************************/
+/********************************************************************************************/
+select {
+	font-family: Verdana !important;
+}
+
+input {
+	font-family: Verdana !important;
+}
+
+/********************************************************************************************/
+/**************************************** LOADING *******************************************/
+/********************************************************************************************/
+.loading .ui-dialog-content {
+	background: #fff !important;
+
+}
+.loading.ui-panelgrid>*>tr,
+.loading.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+
+.loading td,.loading tr {
+    text-align: center;
+}

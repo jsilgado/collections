@@ -47,20 +47,16 @@
                     	List of Car Trademarks
                     </f:facet>
 
-					<p:column headerText="ID">
-						<h:outputText value="#{item.id}" />
-					</p:column>
-
-					<p:column headerText="Name">
+					<p:column headerText="Name" sortBy="#{item.name}" style="text-align: center">
 						<f:facet name="header">
 							<h:outputText value="Name" />
 						</f:facet>
 						<h:outputText value="#{item.name}" />
 					</p:column>
 
-					<p:column headerText="Image">
+					<p:column headerText="Image" style="text-align: center">
    						<p:graphicImage value="/images/carTrademark/trademark-black.png" rendered="#{item.imageBean.url == null}" title="No image" width="120" height="60"/>
-						<p:graphicImage value="#{item.imageBean.url}" rendered="#{item.imageBean.url != null}" title="Image" width="120" height="60"/>
+						<p:graphicImage value="#{item.imageBean.url}" rendered="#{item.imageBean.url != null}" title="#{item.name}" width="120" height="60"/>
 					</p:column>
 
 					<p:column headerText="Action">
